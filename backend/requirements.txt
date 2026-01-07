@@ -1,0 +1,12 @@
+# backend
+flask
+flask-cors
+
+#env
+python-dotenv
+
+#database
+supabase
+
+#docs
+pypdf
