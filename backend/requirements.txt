@@ -2,6 +2,11 @@
 flask
 flask-cors
 
+#ai
+langchain
+langchain-google-genai
+#google
+
 #env
 python-dotenv
 

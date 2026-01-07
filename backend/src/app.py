@@ -1,13 +1,11 @@
-from flask import Flask, jsonify
+from flask import Flask
+from api.routes import api_bp
+from dotenv import load_dotenv
+
+load_dotenv
 
 app = Flask(__name__)
-
-@app.route('/', methods=['GET'])
-def helllo_world():
-    return jsonify({
-        "status": "success",
-        "message": "Hello, World!"
-    })
+app.register_blueprint(api_bp, url_prefix='/api')
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
