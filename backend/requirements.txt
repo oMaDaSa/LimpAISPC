@@ -1,0 +1,5 @@
+flask
+gunicorn
+boto3
+langchain-aws
+python-dotenv
