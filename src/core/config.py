@@ -1,3 +1,4 @@
+'''
 from dotenv import load_dotenv
 from langchain_core.prompts import PromptTemplate
 import os
@@ -33,3 +34,4 @@ PROMPT_TEMPLATE = PromptTemplate(
     template=template_string,
     input_variables=["context", "question"]
 )
+'''

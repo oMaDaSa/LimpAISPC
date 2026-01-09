@@ -1,14 +1,14 @@
 import os
 from flask import Flask
 from dotenv import load_dotenv
-from langchain_aws import ChatBedrock
-from api.routes import api_bp
+#from langchain_aws import ChatBedrock
+#from api.routes import api_bp
 
 load_dotenv()
 
 app = Flask(__name__)
 
-app.register_blueprint(api_bp, url_prefix='/api')
+#app.register_blueprint(api_bp, url_prefix='/api')
 
 @app.route('/')
 def health_check():
