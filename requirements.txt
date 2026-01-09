@@ -1,5 +1,5 @@
-Flask==3.0.3
-gunicorn==21.2.0
-python-dotenv==1.0.1
-boto3==1.35.82
-langchain-aws==0.2.9
+Flask
+gunicorn
+python-dotenv
+boto3
+langchain-aws
