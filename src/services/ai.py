@@ -1,41 +1,19 @@
-#from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
-#from supabase import create_client
-#from langchain_community.vectorstores import SupabaseVectorStore
-#from langchain_core.output_parsers import StrOutputParser
-#from langchain_core.runnables import RunnablePassthrough
+from langchain_aws import ChatBedrock
+from core.config import BEDROCK_CONFIG, PROMPT_TEMPLATE
 
-from core.config import LLM_CONFIG, SUPABASE_CONFIG, PROMPT_TEMPLATE
-
-#def format_doc(docs):
-#    return "\n\n".join(doc.page_content for doc in docs)
-'''
 def ai_response(user_input: str):
-    embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
-
-    supabase_client = create_client(SUPABASE_CONFIG["url"], SUPABASE_CONFIG["key"])
-
-    vector_store = SupabaseVectorStore(
-        client=supabase_client,
-        embedding=embeddings,
-        table_name="documents",
-        query_name="match_documents"
-    )
-
-    retriever = vector_store.as_retriever(search_kwargs={"k": 3, "filter": {}})
-
-    llm= ChatGoogleGenerativeAI(**LLM_CONFIG)
-
-    rag_chain = (
-        {
-            "context": retriever | format_doc,
-            "question": RunnablePassthrough()
-        }
-        | PROMPT_TEMPLATE
-        | llm
-        | StrOutputParser()
-    )
-    
-    response = rag_chain.invoke(user_input)
-    
-    return response
-'''
+    try:
+        llm = ChatBedrock(
+            model_id=BEDROCK_CONFIG["model_id"],
+            region_name=BEDROCK_CONFIG["region_name"],
+            credentials_profile_name=None, 
+            model_kwargs=BEDROCK_CONFIG["model_kwargs"]
+        )
+        prompt = PROMPT_TEMPLATE.format(question=user_input)
+        
+        response = llm.invoke(prompt)
+        
+        return response.content
+        
+    except Exception as e:
+        raise Exception(f"Erro ao processar resposta da IA: {str(e)}")
