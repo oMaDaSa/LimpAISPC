@@ -1,15 +1,24 @@
+import os
 from flask import Flask
-from api.routes import api_bp
 from dotenv import load_dotenv
+from langchain_aws import ChatBedrock
+from api.routes import api_bp
 
 load_dotenv()
 
 app = Flask(__name__)
+
 app.register_blueprint(api_bp, url_prefix='/api')
 
 @app.route('/')
 def health_check():
-    return {"status": "alive"}, 200
+    return {
+        "status": "alive",
+        "service": "LimpaAISPC",
+        "cloud": "AWS App Runner"
+    }, 200
+
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
