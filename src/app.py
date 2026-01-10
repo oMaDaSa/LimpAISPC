@@ -14,7 +14,7 @@ def health_check():
     return {
         "status": "alive",
         "service": "LimpaAISPC",
-        "cloud": "AWS App Runner"
+        "cloud": "AWS Lambda"
     }, 200
 
 if __name__ == '__main__':
