@@ -3,7 +3,6 @@ from core.config import BEDROCK_CONFIG, PROMPT_TEMPLATE
 
 def ai_response(user_input: str):
     try:
-        # Configuração do ChatBedrock (IAM Role em Lambda)
         llm = ChatBedrock(
             model_id=BEDROCK_CONFIG["model_id"],
             region_name=BEDROCK_CONFIG["region_name"],
