@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 app.register_blueprint(api_bp, url_prefix='/api')
 
-@app.route('/api')
+@app.route('/')
 def health_check():
     return {
         "status": "alive",
