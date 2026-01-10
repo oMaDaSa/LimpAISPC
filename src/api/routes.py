@@ -1,8 +1,19 @@
 from flask import Blueprint, jsonify, request
-from services.ai import ai_response
+# from services.ai import ai_response  # Temporariamente desabilitado
 
 api_bp = Blueprint('api', __name__)
 
+@api_bp.route('/', methods=['GET'])
+@api_bp.route('/health', methods=['GET'])
+def health():
+    return jsonify({
+        "status": "healthy",
+        "service": "LimpAI SPC",
+        "version": "1.0.0"
+    }), 200
+
+'''
+# Rota AI temporariamente desabilitada até configurar layer corretamente
 @api_bp.route('/ai', methods=['POST'])
 def ai():
     data = request.get_json()
@@ -22,3 +33,4 @@ def ai():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+'''

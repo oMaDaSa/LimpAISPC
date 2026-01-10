@@ -1,3 +1,5 @@
+'''
+# Temporariamente desabilitado - aguardando layer correta
 from langchain_aws import ChatBedrock
 from core.config import BEDROCK_CONFIG, PROMPT_TEMPLATE
 
@@ -17,3 +19,4 @@ def ai_response(user_input: str):
         
     except Exception as e:
         raise Exception(f"Erro ao processar resposta da IA: {str(e)}")
+'''
