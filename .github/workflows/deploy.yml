@@ -21,8 +21,8 @@ jobs:
     - name: Install dependencies
       run: |
         mkdir -p package
-        pip install Flask mangum -t package/
-        cp -r src package/
+        pip install Flask serverless-wsgi -t package/
+        cp -r src/* package/
         cp lambda_function.py package/
     
     - name: Create deployment package

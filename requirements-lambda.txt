@@ -1,3 +1,2 @@
 Flask
-mangum
-langchain-aws
+serverless-wsgi
