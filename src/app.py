@@ -1,11 +1,12 @@
 from flask import Flask
 from api.routes import api_bp
+import os
 
 app = Flask(__name__)
 
 app.register_blueprint(api_bp, url_prefix='/api')
 
-@app.route('/')
+@app.route('/api')
 def health_check():
     return {
         "status": "alive",
@@ -13,6 +14,6 @@ def health_check():
         "cloud": "AWS App Runner"
     }, 200
 
-
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080, debug=False)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
