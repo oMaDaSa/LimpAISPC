@@ -21,7 +21,7 @@ jobs:
     - name: Install dependencies
       run: |
         mkdir -p package
-        pip install Flask serverless-wsgi -t package/
+        pip install --no-cache-dir Flask serverless-wsgi -t package/
         cp -r src/* package/
         cp lambda_function.py package/
     
