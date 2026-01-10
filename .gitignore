@@ -6,3 +6,6 @@ lambda-deploy.zip
 .venv/
 venv/
 teste.py
+test_lambda_local.py
+layer/
+lambda-layer.zip
