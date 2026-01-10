@@ -13,16 +13,16 @@ jobs:
       with:
         python-version: '3.14'
     
-    - name: Install dependencies for layer
+    - name: Install dependencies for layer with fixed versions
       run: |
         mkdir -p layer/python
-        pip install langchain-aws \
-          --platform manylinux2014_x86_64 \
-          --target layer/python/ \
-          --implementation cp \
-          --python-version 3.14 \
-          --only-binary=:all: \
-          --upgrade
+        pip install \
+          langchain-aws==0.2.6 \
+          langchain-core==0.3.28 \
+          pydantic==2.10.4 \
+          pydantic-core==2.27.2 \
+          boto3 \
+          --target layer/python/
     
     - name: Create layer package
       run: |
