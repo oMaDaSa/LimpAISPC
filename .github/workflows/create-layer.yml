@@ -11,7 +11,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.11'
+        python-version: '3.14'
     
     - name: Install dependencies for layer
       run: |
@@ -36,4 +36,4 @@ jobs:
         aws lambda publish-layer-version \
           --layer-name LimpAI-Dependencies \
           --zip-file fileb://lambda-layer.zip \
-          --compatible-runtimes python3.11
+          --compatible-runtimes python3.14
