@@ -45,5 +45,5 @@ jobs:
     - name: Deploy to Lambda
       run: |
         aws lambda update-function-code \
-          --function-name LimpAI-SPC-API \
+          --function-name LimpAI-SPC \
           --zip-file fileb://lambda-deploy.zip
