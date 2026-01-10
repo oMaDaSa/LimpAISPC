@@ -20,15 +20,20 @@ jobs:
     
     - name: Install dependencies
       run: |
-        pip install -r requirements-lambda.txt -t package/
+        mkdir -p package
+        pip install Flask mangum -t package/
         cp -r src package/
         cp lambda_handler.py package/
     
     - name: Create deployment package
       run: |
         cd package
-        zip -r ../lambda-deploy.zip .
+        zip -r ../lambda-deploy.zip . -x "*.pyc" -x "*__pycache__*" -x "*.dist-info/*"
         cd ..
+        
+    - name: Show package size
+      run: |
+        ls -lh lambda-deploy.zip
     
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v2

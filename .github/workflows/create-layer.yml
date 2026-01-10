@@ -1,0 +1,39 @@
+name: Create Lambda Layer
+
+on:
+  workflow_dispatch: 
+
+jobs:
+  create-layer:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies for layer
+      run: |
+        mkdir -p layer/python
+        pip install langchain-aws boto3 -t layer/python/
+    
+    - name: Create layer package
+      run: |
+        cd layer
+        zip -r ../lambda-layer.zip .
+        cd ..
+    
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+    
+    - name: Publish Lambda Layer
+      run: |
+        aws lambda publish-layer-version \
+          --layer-name LimpAI-Dependencies \
+          --zip-file fileb://lambda-layer.zip \
+          --compatible-runtimes python3.11
