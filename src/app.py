@@ -1,5 +1,5 @@
 from flask import Flask
-#from api.routes import api_bp
+from api.routes import api_bp
 import os
 from dotenv import load_dotenv
 
@@ -7,7 +7,7 @@ load_dotenv()
 
 app = Flask(__name__)
 
-#app.register_blueprint(api_bp, url_prefix='/api')
+app.register_blueprint(api_bp, url_prefix='/api')
 
 @app.route('/api')
 def health_check():
