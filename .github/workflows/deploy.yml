@@ -23,7 +23,7 @@ jobs:
         mkdir -p package
         pip install Flask mangum -t package/
         cp -r src package/
-        cp lambda_handler.py package/
+        cp lambda_function.py package/
     
     - name: Create deployment package
       run: |
