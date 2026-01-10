@@ -1,7 +1,10 @@
 import os
-from dotenv import load_dotenv
 
-load_dotenv()
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass 
 
 # Configuração do Bedrock - usa IAM Role em produção, access keys localmente
 BEDROCK_CONFIG = {

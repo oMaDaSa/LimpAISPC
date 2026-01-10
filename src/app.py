@@ -1,9 +1,12 @@
 from flask import Flask
 from api.routes import api_bp
 import os
-from dotenv import load_dotenv
 
-load_dotenv()
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass  
 
 app = Flask(__name__)
 
