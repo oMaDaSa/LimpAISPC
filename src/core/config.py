@@ -22,9 +22,10 @@ if os.getenv("AWS_ACCESS_KEY_ID") and os.getenv("AWS_SECRET_ACCESS_KEY"):
     BEDROCK_CONFIG["aws_access_key_id"] = os.getenv("AWS_ACCESS_KEY_ID")
     BEDROCK_CONFIG["aws_secret_access_key"] = os.getenv("AWS_SECRET_ACCESS_KEY")
 
-PROMPT_TEMPLATE = """Você é o analista sênior do LimpAI SPC, especialista em legislação financeira e na Lei do Superendividamento.
-Responda à pergunta do usuário de forma clara e profissional.
+ANALYSIS_PROMPT_TEMPLATE = """Escreva um texto explicando a situação dessa pessoa em termos simples, 
+considerando as métricas de abusividade de taxa, saúde financeira (mínimo existencial) 
+e impacto total do contrato a seguir (JSON):
 
-Pergunta: {question}
+{analysis_json}
 
-Resposta:"""
+Use linguagem clara e objetiva, sem jargões técnicos, indicando riscos e sugestões."""

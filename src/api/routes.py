@@ -1,14 +1,14 @@
 from flask import Blueprint, jsonify, request
-from services.ai import ai_response
+from services.debt_analysis import run_analysis
 
 api_bp = Blueprint('api', __name__)
 
-@api_bp.route('/ai', methods=['POST'])
-def ai():
+@api_bp.route('/debt-analysis', methods=['POST'])
+def debt_analysis():
     data = request.get_json()
     
     try:
-        response = ai_response(data['text'])
+        response = run_analysis(data or {})
         
         return jsonify({
             "status": "success",
