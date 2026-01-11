@@ -15,5 +15,6 @@ def parse_debt_payload(data: dict) -> dict:
         'dependents_count': int(data.get('quantidade_dependentes', 0)),
         'total_loan': float(data.get('valor_total_emprestimo', 0.0)),
         'installments_count': int(data.get('quantidade_parcelas', 0)),
-        'market_rate_annual': float(market_rate_annual)
+        'market_rate_annual': float(market_rate_annual),
+        'valor_cesta_basica': float(data.get('valor_cesta_basica', 0.0))
     }

@@ -27,7 +27,8 @@ def run_analysis(data: dict):
         analysis_json = {
             "metricas_taxas": metricas_taxas,
             "saude_financeira": saude_financeira,
-            "impacto_contrato": impacto_contrato
+            "impacto_contrato": impacto_contrato,
+            "valor_cesta_basica": parsed['valor_cesta_basica']
         }
 
         resumo = json.dumps(analysis_json, ensure_ascii=False)
