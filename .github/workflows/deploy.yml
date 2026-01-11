@@ -18,10 +18,9 @@ jobs:
       with:
         python-version: '3.10'
     
-    - name: Install dependencies
+    - name: Package source code
       run: |
         mkdir -p package
-        pip install --no-cache-dir Flask serverless-wsgi -t package/
         cp -r src/* package/
         cp lambda_function.py package/
     

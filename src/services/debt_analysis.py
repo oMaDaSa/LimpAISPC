@@ -1,5 +1,5 @@
-from langchain_aws import ChatBedrock
-from core.config import BEDROCK_CONFIG, ANALYSIS_PROMPT_TEMPLATE
+from core.config import BEDROCK_CONFIG, ANALYSIS_PROMPT_TEMPLATE, BEDROCK_KNOWLEDGE_BASE_ID
+import boto3
 from services.calculator import Calculator
 from services.data_parser import parse_debt_payload
 import json
@@ -34,13 +34,35 @@ def run_analysis(data: dict):
         resumo = json.dumps(analysis_json, ensure_ascii=False)
         question = ANALYSIS_PROMPT_TEMPLATE.format(analysis_json=resumo)
 
-        llm = ChatBedrock(
-            model_id=BEDROCK_CONFIG["model_id"],
-            region_name=BEDROCK_CONFIG["region_name"],
-            model_kwargs=BEDROCK_CONFIG.get("model_kwargs", {})
+        # Usa Bedrock Agent Runtime com Knowledge Base para gerar sem injetar contexto manualmente
+        client_kwargs = {"region_name": BEDROCK_CONFIG["region_name"]}
+        if "aws_access_key_id" in BEDROCK_CONFIG and "aws_secret_access_key" in BEDROCK_CONFIG:
+            client_kwargs["aws_access_key_id"] = BEDROCK_CONFIG["aws_access_key_id"]
+            client_kwargs["aws_secret_access_key"] = BEDROCK_CONFIG["aws_secret_access_key"]
+
+        agent_rt = boto3.client("bedrock-agent-runtime", **client_kwargs)
+
+        response = agent_rt.retrieve_and_generate(
+            input={"text": question},
+            retrieveAndGenerateConfiguration={
+                "type": "KNOWLEDGE_BASE",
+                "knowledgeBaseConfiguration": {
+                    "knowledgeBaseId": BEDROCK_KNOWLEDGE_BASE_ID,
+                    "modelArn": BEDROCK_CONFIG["modelArn"],
+                    "generationConfiguration": {
+                        "inferenceConfig": {
+                            "textInferenceConfig": {
+                                "temperature": BEDROCK_CONFIG["model_kwargs"]["temperature"],
+                                "maxTokens": BEDROCK_CONFIG["model_kwargs"]["max_tokens"],
+                                "topP": BEDROCK_CONFIG["model_kwargs"]["top_p"]
+                            }
+                        }
+                    }
+                }
+            }
         )
-        response = llm.invoke(question)
-        return response.content
+
+        return response["output"]["text"]
 
     except Exception as e:
         raise Exception(f"Erro na análise completa: {str(e)}")

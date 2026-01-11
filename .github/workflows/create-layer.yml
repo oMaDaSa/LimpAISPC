@@ -8,21 +8,18 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.10'
     
-    - name: Install dependencies for layer with fixed versions
+    - name: Install dependencies for layer
       run: |
         mkdir -p layer/python
-        pip install \
-          langchain-aws==0.2.6 \
-          langchain-core==0.3.28 \
-          pydantic==2.10.4 \
-          pydantic-core==2.27.2 \
-          boto3 \
-          --target layer/python/
+        pip install -r requirements_layer.txt --target layer/python/
     
     - name: Create layer package
       run: |
@@ -42,6 +39,6 @@ jobs:
       run: |
         aws lambda publish-layer-version \
           --layer-name LimpAI-Dependencies \
-          --description "langchain-aws dependencies for LimpAI SPC" \
+          --description "python-dotenv for LimpAI SPC" \
           --zip-file fileb://lambda-layer.zip \
           --compatible-runtimes python3.10
