@@ -1,4 +1,4 @@
 Flask
-mangum
+serverless-wsgi
 python-dotenv
 boto3
