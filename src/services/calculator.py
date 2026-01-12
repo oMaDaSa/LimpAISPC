@@ -62,3 +62,33 @@ class Calculator:
             "valor_total_emprestimo": round(total_loan, 2),
             "quantidade_parcelas": installments_count
         }
+
+    def compute_hidden_costs(self, total_loan: float, user_rate_monthly: float, installments_count: int, actual_installment: float, serie_bcb: str) -> dict:
+        # Modalidades rotativas não têm parcela fixa calculável pela Price
+        if serie_bcb in ['20716', '20718']:
+            return {
+                "parcela_teorica": None,
+                "parcela_real": round(actual_installment, 2),
+                "valor_taxas_embutidas_mensal": 0.0,
+                "impacto_total_taxas_embutidas": 0.0,
+                "observacao": "Modalidade rotativa: cálculo de parcela teórica não aplicável."
+            }
+
+        i = user_rate_monthly / 100
+
+        # fórmula da Tabela Price: PMT = PV * i / (1 - (1 + i)^-n)
+        if i == 0:
+            theoretical_installment = total_loan / installments_count
+        else:
+            theoretical_installment = total_loan * i / (1 - (1 + i) ** -installments_count)
+
+        # diferença entre o que deveria ser cobrado e o que realmente é cobrado
+        hidden_cost_monthly = actual_installment - theoretical_installment
+        total_hidden_impact = hidden_cost_monthly * installments_count
+
+        return {
+            "parcela_teorica": round(theoretical_installment, 2),
+            "parcela_real": round(actual_installment, 2),
+            "valor_taxas_embutidas_mensal": round(hidden_cost_monthly, 2),
+            "impacto_total_taxas_embutidas": round(total_hidden_impact, 2)
+        }

@@ -60,4 +60,49 @@ FORMATO DE SAÍDA:
 - Finalize com orientações práticas de renegociação baseadas na Lei 14.181/2021.
 
 Gere o laudo agora:
+
+**1. ABUSIVIDADE DE TAXAS:**
+- Compare 'mensal_consumidor' com 'mensal_mercado'
+- Se houver grande diferença, cite a Súmula 530 do STJ e Art. 51 do CDC
+- Calcule o percentual de abuso usando 'percentual_abuso_taxa'
+
+**2. COMPROMETIMENTO DE RENDA:**
+- Analise 'comprometimento_renda_pct'
+- Se maior que 35%, alerte sobre superendividamento (Lei 14.181/2021)
+
+**3. MÍNIMO EXISTENCIAL:**
+- Compare 'renda_per_capita_familiar' com 'valor_cesta_basica'
+- Use Decreto 11.150/2022 para fundamentar
+
+**4. IMPACTO DO CONTRATO:**
+- Mostre 'valor_total_a_pagar' vs 'valor_total_emprestimo'
+- Calcule quantas vezes o valor emprestado será pago
+- Se desproporcional, cite Crédito Responsável
+
+**5. RECOMENDAÇÕES:**
+- Sugira renegociação com base na Lei 14.181/2021
+- Oriente sobre direitos do consumidor
+
+FORMATO DE SAÍDA (Markdown):
+
+# Laudo Técnico-Jurídico de Análise de Crédito
+
+## 1. Análise de Taxas de Juros
+[conteúdo]
+
+## 2. Comprometimento de Renda
+[conteúdo]
+
+## 3. Mínimo Existencial
+[conteúdo]
+
+## 4. Impacto Total do Contrato
+[conteúdo]
+
+## 5. Recomendações Jurídicas
+[conteúdo]
+
+---
+**IMPORTANTE:** Use parágrafos separados e títulos claros. Seja objetivo e profissional.
+
 """

@@ -27,10 +27,21 @@ def run_analysis(data: dict):
             parsed['total_loan'], 
             parsed['installments_count']
         )
+        
+        # Análise de custos ocultos (taxas escondidas, seguros, TAC)
+        custos_ocultos = calc.compute_hidden_costs(
+            total_loan=parsed['total_loan'],
+            user_rate_monthly=metricas_taxas['mensal_consumidor'],
+            installments_count=parsed['installments_count'],
+            actual_installment=parsed['installment'],
+            serie_bcb=parsed['serie_bcb']
+        )
+        
         analysis_json = {
             "metricas_taxas": metricas_taxas,
             "saude_financeira": saude_financeira,
             "impacto_contrato": impacto_contrato,
+            "analise_custos_ocultos": custos_ocultos,
             "valor_cesta_basica": parsed['valor_cesta_basica']
         }
 
@@ -38,7 +49,6 @@ def run_analysis(data: dict):
         question = ANALYSIS_PROMPT_TEMPLATE.format(analysis_json=resumo)
 
         # Usa Bedrock Agent Runtime com Knowledge Base
-        # No Lambda, usa automaticamente a IAM Role da função
         agent_rt = boto3.client(
             "bedrock-agent-runtime",
             region_name=BEDROCK_CONFIG["region_name"]
