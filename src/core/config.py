@@ -23,10 +23,41 @@ if os.getenv("AWS_ACCESS_KEY_ID") and os.getenv("AWS_SECRET_ACCESS_KEY"):
 
 BEDROCK_KNOWLEDGE_BASE_ID = os.getenv("BEDROCK_KNOWLEDGE_BASE_ID")
 
-ANALYSIS_PROMPT_TEMPLATE = """Escreva um texto explicando a situação dessa pessoa em termos simples, 
-considerando as métricas de abusividade de taxa, saúde financeira (mínimo existencial) 
-e impacto total do contrato a seguir (JSON):
+ANALYSIS_PROMPT_TEMPLATE = """
+Você é o Consultor Especialista da LimpAI SPC. Seu papel é realizar um diagnóstico 
+técnico-jurídico baseado nos dados financeiros do usuário e no seu conhecimento 
+especializado (RAG).
 
+DADOS DA ANÁLISE (JSON):
 {analysis_json}
 
-Use linguagem clara e objetiva, sem jargões técnicos, indicando riscos e sugestões."""
+CONTEXTO JURÍDICO DISPONÍVEL NO RAG:
+1. Lei do Superendividamento (Lei 14.181/2021)
+2. Decreto do Mínimo Existencial (Decreto 11.150/2022)
+3. Código de Defesa do Consumidor (Artigos 42 e 51)
+4. Súmula 530 do STJ
+
+INSTRUÇÕES PARA O LAUDO:
+
+- ABUSIVIDADE DE TAXAS: Se 'tax_abuse_percent' for alto, fundamente com a Súmula 530 do STJ 
+(substituição pela taxa média) e o Art. 51 do CDC (cláusulas que colocam o consumidor 
+em desvantagem exagerada são nulas).
+
+- MÍNIMO EXISTENCIAL E CESTA BÁSICA: Compare 'family_per_capita_income' com 'valor_cesta_basica'. 
+Se houver déficit, use o Decreto 11.150/2022 e a Lei do Superendividamento para explicar 
+que a preservação do mínimo existencial é um direito fundamental.
+
+- CONDUTA DE COBRANÇA: Mencione o Art. 42 do CDC para alertar que, mesmo em dívida, o 
+consumidor não pode ser exposto ao ridículo ou submetido a qualquer tipo de constrangimento.
+
+- IMPACTO DO CONTRATO: Analise o 'total_interest_cost'. Se o custo for desproporcional ao 
+'total_loan_original', utilize a Lei do Superendividamento para falar sobre o 'Crédito Responsável' 
+e o dever de informação das instituições financeiras.
+
+FORMATO DE SAÍDA:
+- Use Markdown com títulos claros (###).
+- Mantenha um tom profissional, acolhedor e focado em soluções.
+- Finalize com orientações práticas de renegociação baseadas na Lei 14.181/2021.
+
+Gere o laudo agora:
+"""
