@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 from api.routes import api_bp
 import os
 
@@ -9,6 +10,7 @@ except ImportError:
     pass  
 
 app = Flask(__name__)
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 app.register_blueprint(api_bp, url_prefix='/api')
 
