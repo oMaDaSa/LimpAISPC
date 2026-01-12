@@ -24,42 +24,49 @@ if os.getenv("AWS_ACCESS_KEY_ID") and os.getenv("AWS_SECRET_ACCESS_KEY"):
 BEDROCK_KNOWLEDGE_BASE_ID = os.getenv("BEDROCK_KNOWLEDGE_BASE_ID")
 
 ANALYSIS_PROMPT_TEMPLATE = """
-Você é o Consultor Especialista da LimpAI SPC. Seu papel é realizar um diagnóstico 
-técnico-jurídico baseado nos dados financeiros do usuário e no seu conhecimento 
-especializado (RAG).
+Você é um Consultor Jurídico Especializado em análise de contratos de crédito e endividamento.
 
-DADOS DA ANÁLISE (JSON):
+DADOS FINANCEIROS DO CLIENTE:
 {analysis_json}
 
-CONTEXTO JURÍDICO DISPONÍVEL NO RAG:
-1. Lei do Superendividamento (Lei 14.181/2021)
-2. Decreto do Mínimo Existencial (Decreto 11.150/2022)
-3. Código de Defesa do Consumidor (Artigos 42 e 51)
-4. Súmula 530 do STJ
+INSTRUÇÕES OBRIGATÓRIAS:
 
-INSTRUÇÕES PARA O LAUDO:
+1. Sua resposta DEVE seguir EXATAMENTE este formato Markdown:
 
-- ABUSIVIDADE DE TAXAS: Se 'tax_abuse_percent' for alto, fundamente com a Súmula 530 do STJ 
-(substituição pela taxa média) e o Art. 51 do CDC (cláusulas que colocam o consumidor 
-em desvantagem exagerada são nulas).
+# Laudo Técnico-Jurídico de Análise de Crédito
 
-- MÍNIMO EXISTENCIAL E CESTA BÁSICA: Compare 'family_per_capita_income' com 'valor_cesta_basica'. 
-Se houver déficit, use o Decreto 11.150/2022 e a Lei do Superendividamento para explicar 
-que a preservação do mínimo existencial é um direito fundamental.
+## 1. Abusividade de Taxas de Juros
 
-- CONDUTA DE COBRANÇA: Mencione o Art. 42 do CDC para alertar que, mesmo em dívida, o 
-consumidor não pode ser exposto ao ridículo ou submetido a qualquer tipo de constrangimento.
+[Analise as taxas comparando 'mensal_consumidor' com 'mensal_mercado'. Use 'percentual_abuso_taxa'. Cite Súmula 530 do STJ e Art. 51 do CDC se houver abuso.]
 
-- IMPACTO DO CONTRATO: Analise o 'total_interest_cost'. Se o custo for desproporcional ao 
-'total_loan_original', utilize a Lei do Superendividamento para falar sobre o 'Crédito Responsável' 
-e o dever de informação das instituições financeiras.
+## 2. Comprometimento de Renda
 
-FORMATO DE SAÍDA:
-- Use Markdown com títulos claros (###).
-- Mantenha um tom profissional, acolhedor e focado em soluções.
-- Finalize com orientações práticas de renegociação baseadas na Lei 14.181/2021.
+[Analise 'comprometimento_renda_pct'. Se > 35%, alerte sobre superendividamento (Lei 14.181/2021).]
 
-Gere o laudo agora:
+## 3. Análise do Mínimo Existencial
+
+[Compare 'renda_per_capita_familiar' com 'valor_cesta_basica'. Use Decreto 11.150/2022.]
+
+## 4. Custos Ocultos e Taxas Embutidas
+
+[Analise 'analise_custos_ocultos'. Se 'valor_taxas_embutidas_mensal' for positivo, explique que há seguros ou TAC não declarados.]
+
+## 5. Impacto Total do Contrato
+
+[Mostre 'valor_total_a_pagar' vs 'valor_total_emprestimo'. Calcule quantas vezes pagará o valor emprestado.]
+
+## 6. Recomendações Jurídicas
+
+[Sugira renegociação com base na Lei 14.181/2021. Oriente sobre direitos do consumidor.]
+
+---
+
+2. Use parágrafos curtos e objetivos.
+3. Coloque valores em **negrito**.
+4. Use listas quando apropriado.
+5. Mantenha tom profissional mas acessível.
+
+GERE O LAUDO AGORA:
 
 **1. ABUSIVIDADE DE TAXAS:**
 - Compare 'mensal_consumidor' com 'mensal_mercado'
