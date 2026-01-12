@@ -8,7 +8,7 @@ except ImportError:
 
 BEDROCK_CONFIG = {
     "region_name": os.getenv("AWS_REGION", "us-east-1"),
-    "modelArn": "arn:aws:bedrock:us-east-1::foundation-model/anthropic.claude-3-5-haiku-20241022-v1:0",
+    "modelArn": "arn:aws:bedrock:us-east-1::foundation-model/anthropic.claude-3-haiku-20240307-v1:0",
     "model_kwargs": {
         "temperature": 0.1, 
         "max_tokens": 1000,

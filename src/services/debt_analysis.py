@@ -6,6 +6,9 @@ import json
 
 def run_analysis(data: dict):
     try:
+        if not BEDROCK_KNOWLEDGE_BASE_ID:
+            raise ValueError("BEDROCK_KNOWLEDGE_BASE_ID não configurada. Verifique as variáveis de ambiente.")
+        
         parsed = parse_debt_payload(data)
         
         calc = Calculator()
@@ -34,13 +37,12 @@ def run_analysis(data: dict):
         resumo = json.dumps(analysis_json, ensure_ascii=False)
         question = ANALYSIS_PROMPT_TEMPLATE.format(analysis_json=resumo)
 
-        # Usa Bedrock Agent Runtime com Knowledge Base para gerar sem injetar contexto manualmente
-        client_kwargs = {"region_name": BEDROCK_CONFIG["region_name"]}
-        if "aws_access_key_id" in BEDROCK_CONFIG and "aws_secret_access_key" in BEDROCK_CONFIG:
-            client_kwargs["aws_access_key_id"] = BEDROCK_CONFIG["aws_access_key_id"]
-            client_kwargs["aws_secret_access_key"] = BEDROCK_CONFIG["aws_secret_access_key"]
-
-        agent_rt = boto3.client("bedrock-agent-runtime", **client_kwargs)
+        # Usa Bedrock Agent Runtime com Knowledge Base
+        # No Lambda, usa automaticamente a IAM Role da função
+        agent_rt = boto3.client(
+            "bedrock-agent-runtime",
+            region_name=BEDROCK_CONFIG["region_name"]
+        )
 
         response = agent_rt.retrieve_and_generate(
             input={"text": question},
