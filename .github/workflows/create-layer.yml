@@ -17,11 +17,13 @@ jobs:
         python-version: '3.10'
     
     - name: Install dependencies for layer
+      working-directory: ./backend
       run: |
         mkdir -p layer/python
         pip install -r requirements_layer.txt --target layer/python/
     
     - name: Create layer package
+      working-directory: ./backend
       run: |
         cd layer
         zip -r9 ../lambda-layer.zip . -x "*.pyc" -x "*__pycache__*"
@@ -35,7 +37,8 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
     
-    - name: Publish Lambda Layer
+    - working-directory: ./backend
+      name: Publish Lambda Layer
       run: |
         aws lambda publish-layer-version \
           --layer-name LimpAI-Dependencies \

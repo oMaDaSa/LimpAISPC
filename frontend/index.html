@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-br" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LimpAI SPC - Analisador Profissional</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/imask"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen">
+
+<div class="flex items-center justify-center py-8 px-4">
+    <div class="bg-gray-800 shadow-2xl rounded-lg p-8 w-full max-w-xl border border-gray-700">
+        <h1 class="text-3xl font-bold text-center text-blue-400 mb-8">LimpAI SPC</h1>
+    
+    <form id="debtForm" class="space-y-6">
+        <!-- Nome Completo -->
+        <div class="space-y-2">
+            <label class="block text-sm font-semibold text-blue-400">Nome Completo:</label>
+            <input type="text" name="nome" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
+        </div>
+
+        <!-- Tipo de Crédito -->
+        <div class="space-y-2">
+            <label class="block text-sm font-semibold text-blue-400">Tipo de Crédito:</label>
+            <p class="text-xs text-gray-400 bg-gray-700 p-3 rounded-lg border border-gray-600 leading-relaxed">
+                O Banco Central monitora as taxas médias para cada categoria de empréstimo. Selecionar o tipo correto é fundamental para sabermos se os juros aplicados a você estão dentro da realidade de mercado da época.
+            </p>
+            <select name="serie_bcb" id="serie_bcb" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
+                <option value="" disabled selected>Selecione a modalidade...</option>
+                <option value="20716" data-desc="Crédito Rotativo: Juros cobrados quando não se paga o total da fatura. Costuma ter as taxas mais elevadas.">Cartão de Crédito (Rotativo)</option>
+                <option value="20718" data-desc="Cheque Especial: Limite de crédito vinculado à conta corrente para uso imediato.">Cheque Especial</option>
+                <option value="20746" data-desc="Crédito Pessoal: Empréstimo comum para pessoa física, sem garantias reais.">Crédito Pessoal (Geral)</option>
+                <option value="20747" data-desc="Crédito Consignado: Empréstimo com desconto direto em folha de pagamento ou benefício.">Crédito Consignado</option>
+                <option value="20734" data-desc="Financiamento de Veículos: Crédito específico para aquisição de bens móveis (carros/motos).">Financiamento de Veículos</option>
+                <option value="20736" data-desc="Crédito Imobiliário: Financiamento destinado à compra de imóveis residenciais.">Crédito Imobiliário</option>
+            </select>
+            <span id="credit-desc" class="text-xs text-green-400 block mt-2 italic border-l-3 border-green-500 pl-3 py-2 bg-gray-700 px-3 rounded"></span>
+        </div>
+
+        <!-- Valor Total do Empréstimo -->
+        <div class="space-y-2" id="group_valor_total_emprestimo">
+            <label class="block text-sm font-semibold text-blue-400">Valor Total do Empréstimo:</label>
+            <p class="text-xs text-gray-400 bg-gray-700 p-3 rounded-lg border border-gray-600 leading-relaxed">
+                Valor original contratado (principal), sem considerar juros futuros. Usado para calcular o custo total do contrato.
+                Em dívidas que não se originam de empréstimos (ex.: cartão de crédito rotativo, cheque especial, tarifas/multas), informe <span class="font-semibold text-blue-400">0</span>.
+            </p>
+            <input type="text" id="valor_total_emprestimo_input" placeholder="R$ 0,00" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
+        </div>
+
+        <!-- Número Total de Parcelas -->
+        <div class="space-y-2" id="group_quantidade_parcelas">
+            <label class="block text-sm font-semibold text-blue-400">Número Total de Parcelas:</label>
+            <p class="text-xs text-gray-400 bg-gray-700 p-3 rounded-lg border border-gray-600 leading-relaxed">
+                Duração total do contrato em parcelas. Informe um número inteiro.
+                Caso não haja parcelas fixas (dívidas rotativas), você pode informar <span class="font-semibold text-blue-400">0</span> ou uma estimativa.
+            </p>
+            <input type="number" name="quantidade_parcelas" min="0" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
+        </div>
+
+        <!-- Data da Assinatura -->
+        <div class="space-y-2">
+            <label class="block text-sm font-semibold text-blue-400">Data da Assinatura do Contrato:</label>
+            <p class="text-xs text-gray-400 bg-gray-700 p-3 rounded-lg border border-gray-600 leading-relaxed">
+                A economia muda constantemente. Para analisar a abusividade, precisamos comparar seu contrato com as taxas vigentes no mês em que você contraiu a dívida.
+            </p>
+            <input type="date" name="data_contrato" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
+        </div>
+
+        <!-- Taxa de Juros -->
+        <div class="space-y-2">
+            <label class="block text-sm font-semibold text-blue-400">Taxa de Juros (CET):</label>
+            <p class="text-xs text-gray-400 bg-gray-700 p-3 rounded-lg border border-gray-600 leading-relaxed">
+                Use o <span class="font-semibold text-blue-400">Custo Efetivo Total (CET)</span>. Ele é o juro real, pois inclui não apenas a taxa nominal, mas também seguros, tarifas bancárias e impostos (IOF) que o banco embutiu na sua dívida.
+            </p>
+            <input type="text" id="taxa_input" placeholder="0,00%" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
+        </div>
+
+        <!-- Tipo de Taxa -->
+        <div class="space-y-2">
+            <label class="block text-sm font-semibold text-blue-400">A taxa informada acima é:</label>
+            <p class="text-xs text-gray-400 bg-gray-700 p-3 rounded-lg border border-gray-600 leading-relaxed mb-3">
+                Bancos geralmente informam a taxa mensal, mas contratos imobiliários costumam destacar a anual. Converteremos os valores para você.
+            </p>
+            <div class="flex gap-8">
+                <label class="flex items-center text-sm cursor-pointer">
+                    <input type="radio" name="tipo_taxa" value="mensal" checked class="w-4 h-4 accent-blue-500">
+                    <span class="ml-2 text-gray-300">Mensal (a.m.)</span>
+                </label>
+                <label class="flex items-center text-sm cursor-pointer">
+                    <input type="radio" name="tipo_taxa" value="anual" class="w-4 h-4 accent-blue-500">
+                    <span class="ml-2 text-gray-300">Anual (a.a.)</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Renda Mensal -->
+        <div class="space-y-2">
+            <label class="block text-sm font-semibold text-blue-400">Sua Renda Mensal Líquida:</label>
+            <p class="text-xs text-gray-400 bg-gray-700 p-3 rounded-lg border border-gray-600 leading-relaxed">
+                Informe o valor que você recebe livre de impostos. Este dado é o pilar para calcularmos o seu <span class="font-semibold text-blue-400">Comprometimento de Renda</span> e verificar se a dívida ameaça sua subsistência.
+            </p>
+            <input type="text" id="renda_input" placeholder="R$ 0,00" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
+        </div>
+
+        <!-- Parcela Mensal -->
+        <div class="space-y-2">
+            <label class="block text-sm font-semibold text-blue-400">Valor da Parcela Mensal:</label>
+            <p class="text-xs text-gray-400 bg-gray-700 p-3 rounded-lg border border-gray-600 leading-relaxed">
+                Quanto sai do seu bolso todos os meses para pagar este contrato específico.
+            </p>
+            <input type="text" id="parcela_input" placeholder="R$ 0,00" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
+        </div>
+
+        <!-- Dependentes -->
+        <div class="space-y-2">
+            <label class="block text-sm font-semibold text-blue-400">Quantidade de Dependentes:</label>
+            <p class="text-xs text-gray-400 bg-gray-700 p-3 rounded-lg border border-gray-600 leading-relaxed">
+                Número de pessoas (filhos, pais, cônjuge) que dependem da sua renda para viver. Isso define o seu <span class="font-semibold text-blue-400">Mínimo Existencial</span>: o valor que a lei impede que os bancos tomem de você.
+            </p>
+            <input type="number" name="quantidade_dependentes" value="0" min="0" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
+        </div>
+
+        <!-- Estado (UF) -->
+        <div class="space-y-2">
+            <label class="block text-sm font-semibold text-blue-400">Estado (UF):</label>
+            <p class="text-xs text-gray-400 bg-gray-700 p-3 rounded-lg border border-gray-600 leading-relaxed">
+                Utilizaremos o valor da cesta básica da capital do seu estado (base DIEESE 12/2025) para calcular seu custo de vida real e validar o mínimo existencial.
+            </p>
+            <select name="valor_cesta_basica" id="estado_input" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
+                <option value="" disabled selected>Selecione seu estado...</option>
+                <option value="626.11">AC</option>
+                <option value="589.69">AL</option>
+                <option value="620.42">AM</option>
+                <option value="651.15">AP</option>
+                <option value="607.48">BA</option>
+                <option value="677.00">CE</option>
+                <option value="714.21">DF</option>
+                <option value="727.22">ES</option>
+                <option value="725.95">GO</option>
+                <option value="629.43">MA</option>
+                <option value="723.26">MG</option>
+                <option value="775.90">MS</option>
+                <option value="791.29">MT</option>
+                <option value="666.57">PA</option>
+                <option value="597.66">PB</option>
+                <option value="596.10">PE</option>
+                <option value="645.09">PI</option>
+                <option value="737.88">PR</option>
+                <option value="792.06">RJ</option>
+                <option value="597.15">RN</option>
+                <option value="592.01">RO</option>
+                <option value="652.14">RR</option>
+                <option value="784.22">RS</option>
+                <option value="801.29">SC</option>
+                <option value="539.49">SE</option>
+                <option value="845.95">SP</option>
+                <option value="677.63">TO</option>
+            </select>
+        </div>
+
+        <!-- Botão Submit -->
+        <button type="submit" id="btnSubmit" class="w-full px-6 py-4 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-bold rounded-lg transition-colors duration-200 mt-8">
+            Gerar Laudo Técnico e Jurídico
+        </button>
+    </form>
+
+    <!-- Resultado -->
+    <div id="result" class="mt-8 p-6 rounded-lg bg-gray-800 border border-gray-700 hidden text-sm leading-relaxed break-words"></div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

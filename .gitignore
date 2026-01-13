@@ -9,3 +9,4 @@ teste.py
 test_lambda_local.py
 layer/
 lambda-layer.zip
+activate_env.cmd

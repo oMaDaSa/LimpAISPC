@@ -1,0 +1,165 @@
+:root {
+    color-scheme: dark;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Componentes reutilizáveis */
+.form-group {
+    @apply bg-slate-700 p-4 rounded-lg;
+}
+
+.form-label {
+    @apply block text-sm font-semibold text-sky-400 mb-2;
+}
+
+.form-input {
+    @apply w-full px-4 py-3 bg-slate-800 border border-slate-600 rounded-lg text-gray-100 
+           placeholder-gray-500 focus:outline-none focus:border-sky-500 focus:ring-1 
+           focus:ring-sky-500 transition;
+}
+
+.help-text {
+    @apply text-xs text-gray-400 leading-relaxed mb-3;
+}
+
+/* Estilos para Markdown Renderizado */
+#result h1 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: rgb(96, 165, 250);
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid rgb(59, 130, 246);
+}
+
+#result h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: rgb(96, 165, 250);
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid rgb(59, 130, 246);
+}
+
+#result h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: rgb(229, 231, 235);
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+#result p {
+    margin-bottom: 1rem;
+    text-align: justify;
+    color: rgb(209, 213, 219);
+    line-height: 1.625;
+}
+
+#result ul, #result ol {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    margin-left: 1.5rem;
+    color: rgb(209, 213, 219);
+}
+
+#result li {
+    margin-bottom: 0.5rem;
+}
+
+#result strong {
+    color: rgb(96, 165, 250);
+    font-weight: bold;
+}
+
+#result em {
+    color: rgb(74, 222, 128);
+    font-style: italic;
+}
+
+#result code {
+    background-color: rgb(31, 41, 55);
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.25rem;
+    font-family: monospace;
+    font-size: 0.875rem;
+    color: rgb(244, 114, 182);
+    border: 1px solid rgb(55, 65, 81);
+}
+
+#result pre {
+    background-color: rgb(31, 41, 55);
+    border: 1px solid rgb(55, 65, 81);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    overflow-x: auto;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+#result pre code {
+    background-color: transparent;
+    padding: 0;
+    border: 0;
+    color: rgb(209, 213, 219);
+}
+
+#result blockquote {
+    border-left: 4px solid rgb(59, 130, 246);
+    padding-left: 1rem;
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+    color: rgb(156, 163, 175);
+    background-color: rgb(31, 41, 55);
+    padding: 0.75rem;
+    border-radius: 0.25rem;
+    font-style: italic;
+}
+
+#result table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+#result table th {
+    background-color: rgb(37, 99, 235);
+    color: white;
+    padding: 0.75rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+#result table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid rgb(55, 65, 81);
+    color: rgb(209, 213, 219);
+}
+
+#result table tr:hover {
+    background-color: rgb(31, 41, 55);
+}
+
+#result a {
+    color: rgb(96, 165, 250);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+}
+
+#result a:hover {
+    border-bottom-color: rgb(96, 165, 250);
+}
+
+#result hr {
+    border: none;
+    border-top: 2px solid rgb(55, 65, 81);
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}

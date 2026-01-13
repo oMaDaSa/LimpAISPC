@@ -19,18 +19,21 @@ jobs:
         python-version: '3.10'
     
     - name: Package source code
+      working-directory: ./backend
       run: |
         mkdir -p package
         cp -r src/* package/
         cp lambda_function.py package/
     
     - name: Create deployment package
+      working-directory: ./backend
       run: |
         cd package
         zip -r ../lambda-deploy.zip . -x "*.pyc" -x "*__pycache__*" -x "*.dist-info/*"
         cd ..
         
     - name: Show package size
+      working-directory: ./backend
       run: |
         ls -lh lambda-deploy.zip
     
@@ -41,7 +44,8 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1 
     
-    - name: Deploy to Lambda
+    - working-directory: ./backend
+      name: Deploy to Lambda
       run: |
         aws lambda update-function-code \
           --function-name LimpAI-SPC \
