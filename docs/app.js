@@ -157,13 +157,55 @@ document.getElementById('debtForm').addEventListener('submit', async function(e)
     // Busca taxa de mercado do BCB
     const marketRate = await fetchMarketRate(rawData.serie_bcb, rawData.data_contrato);
 
+    const serie = rawData.serie_bcb;
+    const valorCampoPrincipal = parseFloat(valorTotalEmprestimoMask.unmaskedValue.replace(',', '.')) || 0;
+    const parcelaValor = parseFloat(parcelaMask.unmaskedValue.replace(',', '.')) || 0;
+    const rendaValor = parseFloat(rendaMask.unmaskedValue.replace(',', '.')) || 0;
+    const taxaCetValor = parseFloat(taxaMask.unmaskedValue.replace(',', '.')) || 0;
+    const valorOriginalDividaInput = parseFloat(rawData.valor_original_divida || 0) || 0;
+
+    // Valores padrão
+    let valor_total_emprestimo = valorCampoPrincipal;
+    let valor_total_fatura = valorCampoPrincipal;
+    let valor_original_divida = valorOriginalDividaInput;
+    let quantidade_parcelas = parseInt(rawData.quantidade_parcelas) || 0;
+
+    if (serie === '20718') {
+        // Cheque Especial: usar o valor principal digitado como fatura/emprestimo/divida original
+        const base = valorCampoPrincipal || valorOriginalDividaInput || parcelaValor;
+        valor_total_fatura = base;
+        valor_total_emprestimo = base;
+        valor_original_divida = base;
+        quantidade_parcelas = 1; // evitar zero em cálculos
+    } else if (serie === '20716') {
+        // Cartão Rotativo: usar valor da fatura; se não tiver, cair para original/divida ou parcela
+        const base = valorCampoPrincipal || valorOriginalDividaInput || parcelaValor;
+        valor_total_fatura = base;
+        valor_total_emprestimo = base;
+        valor_original_divida = valorOriginalDividaInput || base;
+        quantidade_parcelas = 1; // cálculo mensal para rotativo
+    }
+
+    // Fallback de segurança: se ainda zero e usuário digitou parcela, usar a parcela como base mínima
+    if (!valor_total_emprestimo && parcelaValor) {
+        valor_total_emprestimo = parcelaValor;
+    }
+    if (!valor_total_fatura && valor_total_emprestimo) {
+        valor_total_fatura = valor_total_emprestimo;
+    }
+    if (!valor_original_divida && valor_total_emprestimo) {
+        valor_original_divida = valor_total_emprestimo;
+    }
+
     const data = {
         ...rawData,
-        taxa_cet: parseFloat(taxaMask.unmaskedValue.replace(',', '.')),
-        renda: parseFloat(rendaMask.unmaskedValue.replace(',', '.')),
-        parcela: parseFloat(parcelaMask.unmaskedValue.replace(',', '.')),
-        valor_total_emprestimo: parseFloat(valorTotalEmprestimoMask.unmaskedValue.replace(',', '.')),
-        quantidade_parcelas: parseInt(rawData.quantidade_parcelas),
+        taxa_cet: taxaCetValor,
+        renda: rendaValor,
+        parcela: parcelaValor,
+        valor_total_emprestimo,
+        valor_total_fatura,
+        valor_original_divida,
+        quantidade_parcelas,
         quantidade_dependentes: parseInt(rawData.quantidade_dependentes),
         valor_cesta_basica: parseFloat(rawData.valor_cesta_basica),
         taxa_mercado_anual: marketRate
@@ -194,6 +236,7 @@ document.getElementById('debtForm').addEventListener('submit', async function(e)
             body: JSON.stringify(data)
         });
         const result = await response.json();
+        console.log('JSON enviado para LLM:', JSON.stringify(result.analysis_json, null, 2));
         console.log('JSON recebido da API:', JSON.stringify(result, null, 2));
         if (result.status === "success") {
             // Preprocessar markdown: substituir \n escapado e adicionar quebras antes de ##
