@@ -163,6 +163,7 @@ document.getElementById('debtForm').addEventListener('submit', async function(e)
         renda: parseFloat(rendaMask.unmaskedValue.replace(',', '.')),
         parcela: parseFloat(parcelaMask.unmaskedValue.replace(',', '.')),
         valor_total_emprestimo: parseFloat(valorTotalEmprestimoMask.unmaskedValue.replace(',', '.')),
+        valor_total_fatura: parseFloat(valorTotalEmprestimoMask.unmaskedValue.replace(',', '.')),
         quantidade_parcelas: parseInt(rawData.quantidade_parcelas),
         quantidade_dependentes: parseInt(rawData.quantidade_dependentes),
         valor_cesta_basica: parseFloat(rawData.valor_cesta_basica),

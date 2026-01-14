@@ -17,11 +17,14 @@ def parse_debt_payload(data: dict) -> dict:
     total_loan = float(data.get('valor_total_emprestimo', 0.0))
     
     # Lógica de Saldo Devedor para Rotativo
-    if is_revolving and invoice_total > 0:
-        # Saldo devedor = valor total da fatura - valor pago
-        outstanding_balance = invoice_total - installment
-        # Substituir total_loan pelo saldo devedor real
-        total_loan = outstanding_balance if outstanding_balance > 0 else 0.0
+    if is_revolving:
+        # Tenta pegar valor da fatura, se não tiver, usa o total_loan padrão
+        base_value = invoice_total if invoice_total > 0 else total_loan
+        
+        if base_value > 0:
+            # Se pagou algo (installment), subtrai. Se não pagou nada (installment=0), deve tudo.
+            outstanding_balance = base_value - installment
+            total_loan = outstanding_balance if outstanding_balance > 0 else 0.0
     
     # Para rotativos, forçar quantidade_parcelas como 1 para cálculos mensais
     installments_count = int(data.get('quantidade_parcelas', 0))
