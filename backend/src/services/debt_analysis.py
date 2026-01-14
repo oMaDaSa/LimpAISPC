@@ -68,7 +68,10 @@ def run_analysis(data: dict):
         }
 
         summary = json.dumps(analysis_json, ensure_ascii=False)
-        question = ANALYSIS_PROMPT_TEMPLATE.format(analysis_json=summary)
+        question = ANALYSIS_PROMPT_TEMPLATE.format(
+            analysis_json=summary,
+            data_contrato=parsed['data_contrato']
+        )
 
         # Usa Bedrock Agent Runtime com Knowledge Base
         agent_rt = boto3.client(
