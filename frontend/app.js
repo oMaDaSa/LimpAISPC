@@ -187,8 +187,8 @@ document.getElementById('debtForm').addEventListener('submit', async function(e)
     console.log('JSON enviado para API:', JSON.stringify(data, null, 2));
 
     try {
-        //const response = await fetch('https://7z59i92b98.execute-api.us-east-1.amazonaws.com/api/debt-analysis', {
-        const response = await fetch('http://localhost:5000/api/debt-analysis', {
+        const response = await fetch('https://7z59i92b98.execute-api.us-east-1.amazonaws.com/api/debt-analysis', {
+        //const response = await fetch('http://localhost:5000/api/debt-analysis', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
