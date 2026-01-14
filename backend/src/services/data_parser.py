@@ -7,15 +7,40 @@ def parse_debt_payload(data: dict) -> dict:
     if market_rate_annual is None:
         raise ValueError("Taxa de referência de mercado ausente (taxa_mercado_anual)")
     
+    serie_bcb = data.get('serie_bcb', '')
+    is_revolving = serie_bcb in ['20716', '20718']
+    
+    # Captura valores específicos para rotativo
+    invoice_total = float(data.get('valor_total_fatura', 0.0))
+    original_debt = float(data.get('valor_original_divida', 0.0))
+    installment = float(data.get('parcela', 0.0))
+    total_loan = float(data.get('valor_total_emprestimo', 0.0))
+    
+    # Lógica de Saldo Devedor para Rotativo
+    if is_revolving and invoice_total > 0:
+        # Saldo devedor = valor total da fatura - valor pago
+        outstanding_balance = invoice_total - installment
+        # Substituir total_loan pelo saldo devedor real
+        total_loan = outstanding_balance if outstanding_balance > 0 else 0.0
+    
+    # Para rotativos, forçar quantidade_parcelas como 1 para cálculos mensais
+    installments_count = int(data.get('quantidade_parcelas', 0))
+    if is_revolving and installments_count == 0:
+        installments_count = 1
+    
     return {
-        'rate_type': data.get('tipo_taxa'),
-        'cet_rate': float(data.get('taxa_cet', 0.0)),
-        'income': float(data.get('renda', 0.0)),
-        'installment': float(data.get('parcela', 0.0)),
-        'dependents_count': int(data.get('quantidade_dependentes', 0)),
-        'total_loan': float(data.get('valor_total_emprestimo', 0.0)),
-        'installments_count': int(data.get('quantidade_parcelas', 0)),
-        'market_rate_annual': float(market_rate_annual),
+        'tipo_taxa': data.get('tipo_taxa'),
+        'taxa_cet': float(data.get('taxa_cet', 0.0)),
+        'renda': float(data.get('renda', 0.0)),
+        'parcela': installment,
+        'quantidade_dependentes': int(data.get('quantidade_dependentes', 0)),
+        'valor_total_emprestimo': total_loan,
+        'quantidade_parcelas': installments_count,
+        'taxa_mercado_anual': float(market_rate_annual),
         'valor_cesta_basica': float(data.get('valor_cesta_basica', 0.0)),
-        'serie_bcb': data.get('serie_bcb', '')
+        'serie_bcb': serie_bcb,
+        'eh_rotativo': is_revolving,
+        'data_contrato': data.get('data_contrato', ''),
+        'valor_total_fatura': invoice_total,
+        'valor_original_divida': original_debt
     }

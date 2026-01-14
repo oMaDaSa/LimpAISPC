@@ -30,22 +30,22 @@
             </p>
             <select name="serie_bcb" id="serie_bcb" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
                 <option value="" disabled selected>Selecione a modalidade...</option>
-                <option value="20716" data-desc="Crédito Rotativo: Juros cobrados quando não se paga o total da fatura. Costuma ter as taxas mais elevadas.">Cartão de Crédito (Rotativo)</option>
-                <option value="20718" data-desc="Cheque Especial: Limite de crédito vinculado à conta corrente para uso imediato.">Cheque Especial</option>
-                <option value="20746" data-desc="Crédito Pessoal: Empréstimo comum para pessoa física, sem garantias reais.">Crédito Pessoal (Geral)</option>
-                <option value="20747" data-desc="Crédito Consignado: Empréstimo com desconto direto em folha de pagamento ou benefício.">Crédito Consignado</option>
-                <option value="20734" data-desc="Financiamento de Veículos: Crédito específico para aquisição de bens móveis (carros/motos).">Financiamento de Veículos</option>
-                <option value="20736" data-desc="Crédito Imobiliário: Financiamento destinado à compra de imóveis residenciais.">Crédito Imobiliário</option>
+                <option value="20716" data-desc="Crédito Rotativo: Juros cobrados sobre o saldo não pago da fatura. Limite legal de 30 dias.">Cartão de Crédito (Rotativo Total)</option>
+                <option value="20718" data-desc="Cheque Especial: Limite vinculado à conta corrente. Taxas altíssimas para uso imediato.">Cheque Especial</option>
+                <option value="20719" data-desc="Cartão Parcelado: Opção obrigatória após 30 dias no rotativo, com juros geralmente menores.">Cartão de Crédito (Parcelado)</option>
+                <option value="20746" data-desc="Crédito Pessoal (Carnê): Empréstimo sem consignação em folha.">Crédito Pessoal (Não Consignado)</option>
+                <option value="20747" data-desc="Crédito Consignado: Desconto direto no salário ou aposentadoria. Taxas mais baixas.">Crédito Consignado (Total)</option>
+                <option value="20734" data-desc="Financiamento de Veículos: Crédito com alienação fiduciária do carro ou moto.">Financiamento de Veículos</option>
+                <option value="20771" data-desc="Crédito Imobiliário: Financiamento de habitação com taxas de mercado.">Crédito Imobiliário</option>
             </select>
             <span id="credit-desc" class="text-xs text-green-400 block mt-2 italic border-l-3 border-green-500 pl-3 py-2 bg-gray-700 px-3 rounded"></span>
         </div>
 
         <!-- Valor Total do Empréstimo -->
         <div class="space-y-2" id="group_valor_total_emprestimo">
-            <label class="block text-sm font-semibold text-blue-400">Valor Total do Empréstimo:</label>
+            <label id="label_valor_total_emprestimo" class="block text-sm font-semibold text-blue-400">Valor Total do Empréstimo:</label>
             <p class="text-xs text-gray-400 bg-gray-700 p-3 rounded-lg border border-gray-600 leading-relaxed">
                 Valor original contratado (principal), sem considerar juros futuros. Usado para calcular o custo total do contrato.
-                Em dívidas que não se originam de empréstimos (ex.: cartão de crédito rotativo, cheque especial, tarifas/multas), informe <span class="font-semibold text-blue-400">0</span>.
             </p>
             <input type="text" id="valor_total_emprestimo_input" placeholder="R$ 0,00" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
         </div>
@@ -55,7 +55,6 @@
             <label class="block text-sm font-semibold text-blue-400">Número Total de Parcelas:</label>
             <p class="text-xs text-gray-400 bg-gray-700 p-3 rounded-lg border border-gray-600 leading-relaxed">
                 Duração total do contrato em parcelas. Informe um número inteiro.
-                Caso não haja parcelas fixas (dívidas rotativas), você pode informar <span class="font-semibold text-blue-400">0</span> ou uma estimativa.
             </p>
             <input type="number" name="quantidade_parcelas" min="0" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
         </div>
@@ -107,8 +106,8 @@
 
         <!-- Parcela Mensal -->
         <div class="space-y-2">
-            <label class="block text-sm font-semibold text-blue-400">Valor da Parcela Mensal:</label>
-            <p class="text-xs text-gray-400 bg-gray-700 p-3 rounded-lg border border-gray-600 leading-relaxed">
+            <label id="label_parcela" class="block text-sm font-semibold text-blue-400">Valor da Parcela Mensal:</label>
+            <p id="help_parcela" class="text-xs text-gray-400 bg-gray-700 p-3 rounded-lg border border-gray-600 leading-relaxed">
                 Quanto sai do seu bolso todos os meses para pagar este contrato específico.
             </p>
             <input type="text" id="parcela_input" placeholder="R$ 0,00" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">

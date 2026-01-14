@@ -54,6 +54,11 @@ async function fetchMarketRate(serieBcb, dataContrato) {
 function updateContractFields() {
     const mode = selectBcb.value;
     const revolving = ['20716', '20718'].includes(mode); // Cartão Rotativo, Cheque Especial
+    const installment_plan = mode === '20719'; // Cartão Parcelado
+
+    const labelParcela = document.getElementById('label_parcela');
+    const helpParcela = document.getElementById('help_parcela');
+    const labelValorTotal = document.getElementById('label_valor_total_emprestimo');
 
     if (revolving) {
         // Valor total pode ser 0 e parcelas 0 em dívidas rotativas
@@ -66,16 +71,70 @@ function updateContractFields() {
         parcelasInput.readOnly = true;
         parcelasInput.required = false;
         groupParcelas.classList.add('hidden');
-    } else {
-        // Empréstimos/financiamentos: campos visíveis e editáveis
+
+        // Mudar label para rotativos
+        labelParcela.innerText = 'Valor pago na última fatura:';
+        helpParcela.innerText = 'Informe o valor total pago na última fatura do cartão ou cheque especial. O rotativo só pode durar 30 dias, após esse prazo deve ser convertido em parcelado.';
+    } else if (installment_plan) {
+        // Cartão Parcelado: mostra campos padrão de empréstimo
         valorTotalInput.readOnly = false;
         valorTotalInput.required = true;
         groupValorTotal.classList.remove('hidden');
+        labelValorTotal.innerText = 'Valor da Fatura que foi Parcelada:';
 
         parcelasInput.readOnly = false;
         parcelasInput.required = true;
         groupParcelas.classList.remove('hidden');
+
+        // Label específico para parcelado
+        labelParcela.innerText = 'Valor da Parcela Mensal:';
+        helpParcela.innerText = 'Valor de cada parcela mensal da sua fatura parcelada.';
+    } else {
+        // Empréstimos/financiamentos padrão: campos visíveis e editáveis
+        valorTotalInput.readOnly = false;
+        valorTotalInput.required = true;
+        groupValorTotal.classList.remove('hidden');
+        labelValorTotal.innerText = 'Valor Total do Empréstimo:';
+
+        parcelasInput.readOnly = false;
+        parcelasInput.required = true;
+        groupParcelas.classList.remove('hidden');
+
+        // Restaurar label original
+        labelParcela.innerText = 'Valor da Parcela Mensal:';
+        helpParcela.innerText = 'Quanto sai do seu bolso todos os meses para pagar este contrato específico.';
     }
+}
+
+// Função para verificar se passou 30 dias desde a data do contrato
+function checkThirtyDays(dataContrato, serieBcb) {
+    if (!dataContrato || !['20716', '20718'].includes(serieBcb)) {
+        return null;
+    }
+    
+    const [year, month, day] = dataContrato.split('-');
+    const contractDate = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+    const today = new Date();
+    const diffTime = today - contractDate;
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays > 30) {
+        if (serieBcb === '20716') {
+            return {
+                tipo: 'cartao',
+                dias: diffDays,
+                mensagem: `⚠️ Sua dívida no cartão de crédito rotativo está há ${diffDays} dias. Segundo a Resolução CMN 4.549/2017, após 30 dias o banco é OBRIGADO a converter em parcelado. Você tem direito ao parcelamento compulsório!`
+            };
+        } else if (serieBcb === '20718') {
+            return {
+                tipo: 'cheque',
+                dias: diffDays,
+                mensagem: `⚠️ Seu cheque especial está sendo usado há ${diffDays} dias. Segundo a Resolução CMN 4.765/2019, após 30 dias o banco DEVE OFERTAR parcelamento (mas você pode recusar). Verifique se recebeu essa oferta!`
+            };
+        }
+    }
+    
+    return null;
 }
 
 // Inicializa dinâmica
@@ -113,11 +172,23 @@ document.getElementById('debtForm').addEventListener('submit', async function(e)
     const [year, month, day] = rawData.data_contrato.split('-');
     data.data_contrato = `${day}/${month}/${year}`;
 
+    // Verificar alerta de 30 dias no frontend
+    const alerta30Dias = checkThirtyDays(rawData.data_contrato, rawData.serie_bcb);
+    if (alerta30Dias) {
+        const showAlert = confirm(alerta30Dias.mensagem + '\n\nDeseja continuar com a análise?');
+        if (!showAlert) {
+            btn.disabled = false;
+            btn.innerText = "Gerar Laudo Técnico e Jurídico";
+            return;
+        }
+    }
+
     // Printar JSON enviado
     console.log('JSON enviado para API:', JSON.stringify(data, null, 2));
 
     try {
-        const response = await fetch('https://7z59i92b98.execute-api.us-east-1.amazonaws.com/api/debt-analysis', {
+        //const response = await fetch('https://7z59i92b98.execute-api.us-east-1.amazonaws.com/api/debt-analysis', {
+        const response = await fetch('http://localhost:5000/api/debt-analysis', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
