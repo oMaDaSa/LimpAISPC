@@ -65,7 +65,7 @@ class Calculator:
         }
 
     def check_interest_cap(self, original_debt: float, total_interest_paid: float, serie_bcb: str) -> dict:
-        #calcula percentual de juros e verifica se ultrapassa 100% (Lei do Desenrola - cartão rotativo 20716 e parcelado 20719)"""
+        #calcula percentual de juros e verifica se ultrapassa 100% (Lei do Desenrola - cartão rotativo 20716 e parcelado 20719)
         if original_debt > 0:
             interest_percentage = (total_interest_paid / original_debt) * 100
         else:
