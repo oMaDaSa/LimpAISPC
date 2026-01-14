@@ -8,11 +8,12 @@ def debt_analysis():
     data = request.get_json()
     
     try:
-        response = run_analysis(data or {})
+        result = run_analysis(data or {})
         
         return jsonify({
             "status": "success",
-            "ai_response": response
+            "analysis_json": result["analysis_json"],
+            "ai_response": result["ai_response"]
         }), 200
 
     except Exception as e:

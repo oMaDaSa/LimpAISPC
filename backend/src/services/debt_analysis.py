@@ -96,7 +96,10 @@ def run_analysis(data: dict):
             }
         )
 
-        return response["output"]["text"]
+        return {
+            "analysis_json": analysis_json,
+            "ai_response": response["output"]["text"]
+        }
 
     except Exception as e:
         raise Exception(f"Erro na análise completa: {str(e)}")
