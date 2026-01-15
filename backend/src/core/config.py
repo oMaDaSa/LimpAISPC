@@ -23,6 +23,8 @@ if os.getenv("AWS_ACCESS_KEY_ID") and os.getenv("AWS_SECRET_ACCESS_KEY"):
 
 BEDROCK_KNOWLEDGE_BASE_ID = os.getenv("BEDROCK_KNOWLEDGE_BASE_ID")
 
+API_PASSWORD = os.getenv("PASSWORD", "123456789")
+
 ANALYSIS_PROMPT_TEMPLATE = """
 
 Você é um Assistente de Inteligência Artificial especializado em **Análise Financeira**, **Análise de Crédito** e **Educação Financeira do Consumidor**.

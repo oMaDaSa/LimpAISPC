@@ -228,6 +228,10 @@ document.getElementById('debtForm').addEventListener('submit', async function(e)
     // Printar JSON enviado
     console.log('JSON enviado para API:', JSON.stringify(data, null, 2));
 
+    // Adicionar senha ao payload
+    const password = document.getElementById('password_input').value;
+    data.password = password;
+
     try {
         const response = await fetch('https://7z59i92b98.execute-api.us-east-1.amazonaws.com/api/debt-analysis', {
         //const response = await fetch('http://localhost:5000/api/debt-analysis', {
@@ -252,6 +256,8 @@ document.getElementById('debtForm').addEventListener('submit', async function(e)
             resultDiv.innerHTML = marked.parse(md);
             resultDiv.classList.remove('hidden');
             resultDiv.scrollIntoView({ behavior: 'smooth' });
+        } else if (result.error === "Senha incorreta") {
+            alert("Senha incorreta. Verifique a senha e tente novamente.");
         }
     } catch (error) {
         alert("Erro ao conectar com o servidor da AWS.");
