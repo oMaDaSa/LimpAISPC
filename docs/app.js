@@ -161,12 +161,15 @@ document.getElementById('debtForm').addEventListener('submit', async function(e)
     const marketRate = await fetchMarketRate(rawData.serie_bcb, rawData.data_contrato);
     console.log('Taxa BCB recebida:', marketRate);
 
+    console.log('Processando valores do formulário...');
     const serie = rawData.serie_bcb;
     const valorCampoPrincipal = parseFloat(valorTotalEmprestimoMask.unmaskedValue.replace(',', '.')) || 0;
     const parcelaValor = parseFloat(parcelaMask.unmaskedValue.replace(',', '.')) || 0;
     const rendaValor = parseFloat(rendaMask.unmaskedValue.replace(',', '.')) || 0;
     const taxaCetValor = parseFloat(taxaMask.unmaskedValue.replace(',', '.')) || 0;
     const valorOriginalDividaInput = parseFloat(rawData.valor_original_divida || 0) || 0;
+
+    console.log('Valores parseados:', { valorCampoPrincipal, parcelaValor, rendaValor, taxaCetValor });
 
     // Valores padrão
     let valor_total_emprestimo = valorCampoPrincipal;
@@ -218,7 +221,10 @@ document.getElementById('debtForm').addEventListener('submit', async function(e)
     const [year, month, day] = rawData.data_contrato.split('-');
     data.data_contrato = `${day}/${month}/${year}`;
 
+    console.log('Data do objeto construído:', data);
+
     // Verificar alerta de 30 dias no frontend
+    console.log('Verificando alerta de 30 dias...');
     const alerta30Dias = checkThirtyDays(rawData.data_contrato, rawData.serie_bcb);
     if (alerta30Dias) {
         const showAlert = confirm(alerta30Dias.mensagem + '\n\nDeseja continuar com a análise?');
