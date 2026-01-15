@@ -77,7 +77,7 @@ Sua função é analisar os dados financeiros e gerar um relatório educativo.
 
 ## 5. Resumo e Próximos Passos (OBRIGATÓRIO)
 
-- **Valor Total a Pagar:** Mostre o valor total da fatura/dívida atual (R$ {valor_total_a_pagar}).
+- **Valor Total a Pagar:** Mostre o valor total da fatura/dívida atual
 
 - **CENÁRIO DE JUROS:**
   - **SE `custo_total_juros` for MAIOR que 0:**
@@ -85,7 +85,7 @@ Sua função é analisar os dados financeiros e gerar um relatório educativo.
   - **SE `custo_total_juros` for IGUAL a 0:**
     - **NÃO** mostre tabela comparativa.
     - **NÃO** diga "não há juros".
-    - **DIGA APENAS:** *"O valor total a ser quitado é de R$ {valor_total_a_pagar}. É fundamental priorizar este pagamento ou buscar renegociação imediata, pois a taxa de juros atual ({taxa_anual}% a.a.) fará essa dívida crescer rapidamente se não for quitada."*
+    - **DIGA APENAS:** *"O valor total a ser quitado é de R$ *valor_total_a_pagar*. É fundamental priorizar este pagamento ou buscar renegociação imediata, pois a taxa de juros atual ({taxa_anual} a.a.) fará essa dívida crescer rapidamente se não for quitada."*
 
 - Liste algumas ações práticas imediatas (ex: Portabilidade, Renegociação, BACEN).
 **Gere a resposta completa em Markdown agora.**
