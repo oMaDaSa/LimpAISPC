@@ -23,13 +23,29 @@ def run_analysis(data: dict):
             parsed['parcela'], 
             parsed['quantidade_dependentes']
         )
-        impacto_contrato = calc.compute_contract_impact(
-            parsed['parcela'], 
-            parsed['valor_total_emprestimo'], 
-            parsed['quantidade_parcelas']
-        )
         
-        # Análise de custos ocultos (taxas escondidas, seguros, TAC)
+        # cálculo de impacto do contrato: lógica diferente para rotativo e parcelado
+        if parsed['eh_rotativo']:
+            # crédito Rotativo: construir manualmente
+            valor_total_emprestimo = parsed['valor_original_divida'] if parsed['valor_original_divida'] > 0 else parsed['valor_total_fatura']
+            valor_total_a_pagar = parsed['valor_total_fatura']
+            custo_total_juros = valor_total_a_pagar - valor_total_emprestimo
+            
+            impacto_contrato = {
+                'valor_total_a_pagar': valor_total_a_pagar,
+                'valor_total_emprestimo': valor_total_emprestimo,
+                'custo_total_juros': custo_total_juros,
+                'quantidade_parcelas': 1
+            }
+        else:
+            # parcelado: usar o cálculo tradicional
+            impacto_contrato = calc.compute_contract_impact(
+                parsed['parcela'], 
+                parsed['valor_total_emprestimo'], 
+                parsed['quantidade_parcelas']
+            )
+        
+        # análise de custos ocultos (taxas escondidas, seguros, TAC)
         custos_ocultos = calc.compute_hidden_costs(
             total_loan=parsed['valor_total_emprestimo'],
             user_rate_monthly=metricas_taxas['mensal_consumidor'],
@@ -38,13 +54,13 @@ def run_analysis(data: dict):
             serie_bcb=parsed['serie_bcb']
         )
         
-        # Calcular juros acumulados corretamente para rotativo vs parcelado
+        # calcular juros acumulados corretamente para rotativo vs parcelado
         if parsed['eh_rotativo']:
-            # Para rotativo: juros = quanto a dívida cresceu além do original
+            # para rotativo: juros = quanto a dívida cresceu além do original
             accumulated_interest = parsed['valor_total_fatura'] - parsed['valor_original_divida']
             analyzed_original_debt = parsed['valor_original_divida'] if parsed['valor_original_divida'] > 0 else parsed['valor_total_emprestimo']
         else:
-            # Para parcelado: usar cálculo tradicional
+            # para parcelado: usar cálculo tradicional
             accumulated_interest = impacto_contrato['custo_total_juros']
             analyzed_original_debt = parsed['valor_total_emprestimo']
         
@@ -73,7 +89,7 @@ def run_analysis(data: dict):
             data_contrato=parsed['data_contrato']
         )
 
-        # Usa Bedrock Agent Runtime com Knowledge Base
+        # Bedrock Agent Runtime com Knowledge Base
         agent_rt = boto3.client(
             "bedrock-agent-runtime",
             region_name=BEDROCK_CONFIG["region_name"]
