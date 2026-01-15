@@ -154,8 +154,12 @@ document.getElementById('debtForm').addEventListener('submit', async function(e)
     const formData = new FormData(this);
     const rawData = Object.fromEntries(formData.entries());
 
+    console.log('Iniciando processamento...');
+    
     // Busca taxa de mercado do BCB
+    console.log('Buscando taxa do BCB...');
     const marketRate = await fetchMarketRate(rawData.serie_bcb, rawData.data_contrato);
+    console.log('Taxa BCB recebida:', marketRate);
 
     const serie = rawData.serie_bcb;
     const valorCampoPrincipal = parseFloat(valorTotalEmprestimoMask.unmaskedValue.replace(',', '.')) || 0;
@@ -229,6 +233,8 @@ document.getElementById('debtForm').addEventListener('submit', async function(e)
     const password = document.getElementById('password_input').value;
     data.password = password;
 
+    console.log('Enviando para API...');
+    
     try {
         const response = await fetch('https://7z59i92b98.execute-api.us-east-1.amazonaws.com/api/debt-analysis', {
         //const response = await fetch('http://localhost:5000/api/debt-analysis', {
@@ -236,10 +242,14 @@ document.getElementById('debtForm').addEventListener('submit', async function(e)
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         });
+        
+        console.log('Response recebida, status:', response.status);
+        
         const result = await response.json();
+        console.log('Result parseado:', result);
         
         if (result.error === "Senha incorreta") {
-            alert("❌ Senha incorreta. Verifique a senha e tente novamente.");
+            alert("Senha incorreta. Verifique a senha e tente novamente.");
         } else if (result.error) {
             alert("Erro: " + result.error);
         } else if (result.status === "success") {
@@ -259,7 +269,8 @@ document.getElementById('debtForm').addEventListener('submit', async function(e)
             resultDiv.scrollIntoView({ behavior: 'smooth' });
         }
     } catch (error) {
-        alert("Erro ao conectar com o servidor da AWS.");
+        console.error('ERRO CAPTURADO:', error);
+        alert("Erro ao conectar com o servidor: " + error.message);
     } finally {
         btn.disabled = false;
         btn.innerText = "Gerar Laudo";
