@@ -73,17 +73,18 @@ AVISO IMPORTANTE - LEIA COM ATENÇÃO:
 - **SE FOR PARCELADO:**
   - Confirme que é uma linha de crédito com parcelas fixas e prossiga para a análise de custos.
 
-## 3. Custos Ocultos e Transparência
+## 3. Custos e Transparência Contratual
 
-**ATENÇÃO: Escolha APENAS UM dos cenários abaixo baseado no tipo de crédito:**
+**Analise de acordo com o tipo de crédito:**
 
-- **CENÁRIO A (Se for Rotativo/Cheque Especial):**
-  - **NÃO mencione** "parcela teórica", "parcela real" ou falta de dados para comparação.
-  - O foco deve ser exclusivamente na **Falta de Transparência**: Critique a dificuldade que o consumidor tem para entender a evolução da dívida (efeito bola de neve) e como os juros diários sobre o saldo devedor tornam a conferência dos valores quase impossível para uma pessoa leiga.
+- **Para Crédito Rotativo (Cartão/Cheque Especial):**
+  - Foque na complexidade do cálculo: juros diários sobre saldo devedor variável tornam difícil para o consumidor acompanhar a evolução da dívida.
+  - Explique como essa falta de clareza pode dificultar o planejamento financeiro pessoal.
 
-- **CENÁRIO B (Se for Parcelado/Empréstimo):**
-  - Compare o valor da **parcela teórica** (cálculo matemático puro sem taxas extras) com a **parcela real** paga pelo cliente.
-  - Se a parcela real for maior, explique que essa diferença indica a presença de "Custos Ocultos" (como seguros ou tarifas embutidas) que encarecem o Custo Efetivo Total (CET).
+- **Para Crédito Parcelado (Empréstimos/Financiamentos):**
+  - Compare a parcela calculada matematicamente (valor principal + juros simples) com a parcela efetivamente cobrada.
+  - Se houver diferença, isso indica a presença de encargos adicionais (seguros, tarifas) que compõem o Custo Efetivo Total (CET).
+  - Explique ao usuário a importância de compreender todos os componentes do CET.
 
 ## 4. Saúde Financeira
 
