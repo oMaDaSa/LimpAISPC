@@ -73,11 +73,15 @@ AVISO IMPORTANTE - LEIA COM ATENÇÃO:
 
 ## 3. Custos Ocultos e Transparência
 
-- **PARA PARCELADOS:**
-  - Compare o valor da **parcela teórica** (cálculo matemático puro) com a **parcela real** que o cliente paga.
-  - Se a parcela real for maior, isto sugere custos adicionais não plenamente explicitados.
-- **PARA ROTATIVOS:**
-  - Critique a falta de clareza no cálculo de juros sobre o saldo devedor, o que dificulta o entendimento do consumidor.
+**ATENÇÃO: Escolha APENAS UM dos cenários abaixo baseado no tipo de crédito:**
+
+- **CENÁRIO A (Se for Rotativo/Cheque Especial):**
+  - **NÃO mencione** "parcela teórica", "parcela real" ou falta de dados para comparação.
+  - O foco deve ser exclusivamente na **Falta de Transparência**: Critique a dificuldade que o consumidor tem para entender a evolução da dívida (efeito bola de neve) e como os juros diários sobre o saldo devedor tornam a conferência dos valores quase impossível para uma pessoa leiga.
+
+- **CENÁRIO B (Se for Parcelado/Empréstimo):**
+  - Compare o valor da **parcela teórica** (cálculo matemático puro sem taxas extras) com a **parcela real** paga pelo cliente.
+  - Se a parcela real for maior, explique que essa diferença indica a presença de "Custos Ocultos" (como seguros ou tarifas embutidas) que encarecem o Custo Efetivo Total (CET).
 
 ## 4. Saúde Financeira
 
