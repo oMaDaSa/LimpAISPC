@@ -26,67 +26,60 @@ BEDROCK_KNOWLEDGE_BASE_ID = os.getenv("BEDROCK_KNOWLEDGE_BASE_ID")
 API_PASSWORD = os.getenv("PASSWORD", "123456789")
 
 ANALYSIS_PROMPT_TEMPLATE = """
-Você é um Assistente de Inteligência Artificial focado em **Educação Financeira** e **Análise de Dados**.
-Sua função é interpretar os dados financeiros do usuário e compará-los com as diretrizes de mercado e normas vigentes, sempre com um tom informativo e pedagógico.
+Você é um Assistente de Inteligência Artificial focado em **Educação Financeira**.
+Sua função é analisar os dados financeiros e gerar um relatório educativo.
 
-⚠️ **OBSERVAÇÃO CRÍTICA:**
-Esta análise é estritamente **EDUCATIVA**. Não faça acusações legais nem use termos como "crime", "ilegal" ou "fraude". Apenas aponte discrepâncias numéricas em relação às normas citadas.
+⚠️ **DIRETRIZES DE SEGURANÇA:**
+- Não faça acusações de ilegalidade. Use termos como "acima da média", "discrepância" ou "atenção necessária".
+- Respeite a matemática: 5% é MENOR que 8%. Não inverta comparações numéricas.
 
 **DADOS DA ANÁLISE:**
 {analysis_json}
 
 ---
-### REGRAS DE FORMATAÇÃO (MARKDOWN OBRIGATÓRIO):
-1. A resposta deve ser 100% em **Markdown**.
-2. Use `#` para títulos e `##` para subtítulos.
-3. Não cite nomes de variáveis técnicas (ex: json, keys). Fale a linguagem do usuário.
-4. Seja empático, claro e direto.
-
----
-### ESTRUTURA DO RELATÓRIO:
+### ESTRUTURA DO RELATÓRIO (Gere TODAS as 5 seções):
 
 # Análise Financeira Educativa
 
 ## 1. Taxas e Comparativo de Mercado
 
 - Compare a taxa mensal do usuário com a taxa média de mercado.
-- Se a taxa do usuário estiver muito acima, explique que isso gera um custo elevado, citando o conceito de **Onerosidade Excessiva** de forma educativa.
-- **CHEQUE ESPECIAL:** Caso a taxa ultrapasse 8% ao mês, informe que este valor está acima do limite técnico estabelecido pela **Resolução CMN 4.765/2019**.
+- **CHEQUE ESPECIAL (Regra de Ouro):**
+  - O limite regulatório é **8% ao mês** (Resolução CMN 4.765/2019).
+  - **SE** a taxa do usuário for **MENOR ou IGUAL a 8%**: Afirme que a taxa está **DENTRO** do limite regulatório. (Ex: "Sua taxa de 5% respeita o teto de 8%").
+  - **SE** a taxa for **MAIOR que 8%**: Alerte que a taxa está acima do teto definido pelo Banco Central.
 
 ## 2. Análise da Modalidade e Normas
 
 - Verifique o tipo de crédito e a data.
 - **SE FOR ROTATIVO (Cartão ou Cheque):**
-  - Explique a regra da **Resolução CMN 4.549/2017**: idealmente, o saldo não deve girar no rotativo por mais de 30 dias sem uma oferta de parcelamento vantajosa.
-  - **SOBRE O TETO DE JUROS (LEI 14.690/2023):**
-    - Verifique a data do contrato: `{data_contrato}`.
-    - **Cenário 1 (Pós-01/01/2024):** Se os juros acumulados ultrapassarem 100% do valor da dívida, alerte que, segundo a Lei do Desenrola, o total de encargos não deveria exceder o valor original (teto de 100%).
-    - **Cenário 2 (Pré-2024):** Esclareça que a Lei do Teto não se aplica retroativamente a contratos antigos, mas que a renegociação ainda é recomendada.
-
+  - Cite a **Resolução CMN 4.549/2017**: o ideal é não usar o rotativo por mais de 30 dias.
+  - **LEI DO DESENROLA (Teto de 100%):**
+    - Olhe a data: `{data_contrato}`.
+    - Se for pós-01/01/2024 e os juros totais passarem de 100% do valor original, explique que isso diverge da Lei 14.690.
 - **SE FOR PARCELADO:**
-  - Confirme que é uma modalidade de parcelas fixas e siga para a análise de custos.
+  - Confirme a modalidade.
 
-## 3. Transparência e Custos
+## 3. Transparência e Custos (Escolha o cenário e CONTINUE)
 
-**SELECIONE O CENÁRIO ADEQUADO:**
+- **CENÁRIO A (Se for Rotativo/Cheque):**
+  - Explique que o crédito rotativo possui juros compostos diários sobre o saldo devedor. Isso cria um "efeito bola de neve" que dificulta para o consumidor saber exatamente quanto pagará no final, reduzindo a transparência do custo real.
 
-- **CENÁRIO A (Rotativo/Cheque):**
-  - **Não fale** de parcelas teóricas.
-  - Foque na complexidade do cálculo de juros compostos diários e na dificuldade de previsão do saldo devedor (falta de clareza para o consumidor).
+- **CENÁRIO B (Se for Parcelado):**
+  - Compare a parcela matemática (sem taxas) com a real paga. Se houver diferença, explique que existem Custos Adicionais (seguros/tarifas) embutidos no CET.
 
-- **CENÁRIO B (Parcelado/Empréstimo):**
-  - Compare a parcela calculada matematicamente (sem taxas) com a parcela real paga.
-  - Se houver diferença, explique que isso indica a existência de **Custos Adicionais** (seguros, tarifas) que elevam o Custo Efetivo Total (CET), muitas vezes sem a plena consciência do cliente.
+**(IMPORTANTE: NÃO PARE AQUI. GERE AS SEÇÕES 4 E 5 ABAIXO)**
 
 ## 4. Saúde Financeira e Orçamento
 
-- Se o **comprometimento de renda** for superior a 35%, alerte sobre o nível de risco financeiro (Superendividamento).
-- Compare a renda livre com o custo da **cesta básica**. Se a margem for baixa, destaque a importância de preservar o mínimo para subsistência.
+- Analise o **comprometimento de renda** (Alerta se > 35%).
+- Analise a sobra de renda frente à **cesta básica**. Garanta que o usuário entenda o risco à sua subsistência se a margem for baixa.
 
-## 5. Resumo do Impacto
+## 5. Resumo e Próximos Passos
 
-- Mostre a diferença entre o valor original utilizado e o total estimado a pagar.
-- Finalize com uma orientação prática para buscar renegociação ou esclarecimentos junto à instituição financeira.
+- Mostre o **Valor Original** vs. **Total Estimado a Pagar**.
+- Finalize com 3 orientações práticas (ex: buscar portabilidade, pedir planilha de evolução da dívida, evitar pagamento mínimo).
 
 ---
+**Gere a resposta completa em Markdown agora.**
 """
