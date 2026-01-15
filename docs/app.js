@@ -220,7 +220,7 @@ document.getElementById('debtForm').addEventListener('submit', async function(e)
         const showAlert = confirm(alerta30Dias.mensagem + '\n\nDeseja continuar com a análise?');
         if (!showAlert) {
             btn.disabled = false;
-            btn.innerText = "Gerar Laudo Técnico e Jurídico";
+            btn.innerText = "Gerar Laudo";
             return;
         }
     }
@@ -266,6 +266,6 @@ document.getElementById('debtForm').addEventListener('submit', async function(e)
         alert("Erro ao conectar com o servidor da AWS.");
     } finally {
         btn.disabled = false;
-        btn.innerText = "Gerar Laudo Técnico e Jurídico";
+        btn.innerText = "Gerar Laudo";
     }
 });
