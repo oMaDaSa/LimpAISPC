@@ -225,9 +225,6 @@ document.getElementById('debtForm').addEventListener('submit', async function(e)
         }
     }
 
-    // Printar JSON enviado
-    console.log('JSON enviado para API:', JSON.stringify(data, null, 2));
-
     // Adicionar senha ao payload
     const password = document.getElementById('password_input').value;
     data.password = password;
@@ -240,23 +237,21 @@ document.getElementById('debtForm').addEventListener('submit', async function(e)
             body: JSON.stringify(data)
         });
         const result = await response.json();
-        console.log('JSON recebido da API:', JSON.stringify(result, null, 2));
         
         if (result.error === "Senha incorreta") {
             alert("❌ Senha incorreta. Verifique a senha e tente novamente.");
         } else if (result.error) {
             alert("Erro: " + result.error);
         } else if (result.status === "success") {
-            console.log('JSON enviado para LLM:', JSON.stringify(result.analysis_json, null, 2));
             // Preprocessar markdown: substituir \n escapado e adicionar quebras antes de ##
             let md = result.ai_response || '';
+            console.log('AI Response:', md);
             // Substituir \n escapado por quebra real
             md = md.replace(/\\n/g, '\n');
             // Adicionar quebra dupla antes de ## que não têm quebra dupla
             md = md.replace(/([^\n])\n(##)/g, '$1\n\n$2');
             // Adicionar quebra dupla se ## vier direto após texto sem quebra
             md = md.replace(/([^\n])(##)/g, '$1\n\n$2');
-            console.log('Markdown processado:', md);
             // Renderizar markdown para HTML bonito
             resultDiv.innerHTML = marked.parse(md);
             resultDiv.classList.remove('hidden');
