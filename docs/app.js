@@ -243,6 +243,7 @@ document.getElementById('debtForm').addEventListener('submit', async function(e)
         } else if (result.error) {
             alert("Erro: " + result.error);
         } else if (result.status === "success") {
+            console.log('Analysis JSON:', JSON.stringify(result.analysis_json, null, 2));
             // Preprocessar markdown: substituir \n escapado e adicionar quebras antes de ##
             let md = result.ai_response || '';
             console.log('AI Response:', md);
