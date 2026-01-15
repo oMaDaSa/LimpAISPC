@@ -7,6 +7,10 @@ api_bp = Blueprint('api', __name__)
 @api_bp.before_request
 def verify_password():
     #middleware para verificar senha em todas as rotas da API
+    #ignorar verificação para requisições OPTIONS (CORS preflight)
+    if request.method == 'OPTIONS':
+        return None
+    
     data = request.get_json() or {}
     password = data.get('password', '')
     

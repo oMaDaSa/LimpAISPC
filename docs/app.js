@@ -240,9 +240,14 @@ document.getElementById('debtForm').addEventListener('submit', async function(e)
             body: JSON.stringify(data)
         });
         const result = await response.json();
-        console.log('JSON enviado para LLM:', JSON.stringify(result.analysis_json, null, 2));
         console.log('JSON recebido da API:', JSON.stringify(result, null, 2));
-        if (result.status === "success") {
+        
+        if (result.error === "Senha incorreta") {
+            alert("❌ Senha incorreta. Verifique a senha e tente novamente.");
+        } else if (result.error) {
+            alert("Erro: " + result.error);
+        } else if (result.status === "success") {
+            console.log('JSON enviado para LLM:', JSON.stringify(result.analysis_json, null, 2));
             // Preprocessar markdown: substituir \n escapado e adicionar quebras antes de ##
             let md = result.ai_response || '';
             // Substituir \n escapado por quebra real
@@ -256,8 +261,6 @@ document.getElementById('debtForm').addEventListener('submit', async function(e)
             resultDiv.innerHTML = marked.parse(md);
             resultDiv.classList.remove('hidden');
             resultDiv.scrollIntoView({ behavior: 'smooth' });
-        } else if (result.error === "Senha incorreta") {
-            alert("Senha incorreta. Verifique a senha e tente novamente.");
         }
     } catch (error) {
         alert("Erro ao conectar com o servidor da AWS.");
