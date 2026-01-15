@@ -123,13 +123,13 @@ function checkThirtyDays(dataContrato, serieBcb) {
             return {
                 tipo: 'cartao',
                 dias: diffDays,
-                mensagem: `⚠️ Sua dívida no cartão de crédito rotativo está há ${diffDays} dias. Segundo a Resolução CMN 4.549/2017, após 30 dias o banco é OBRIGADO a converter em parcelado. Você tem direito ao parcelamento compulsório!`
+                mensagem: `⚠️ Dívida no cartão de crédito rotativo há mais de ${diffDays} dias. Segundo a Resolução CMN 4.549/2017, o crédito rotativo só pode ser utilizado por até 30 dias. Após esse prazo, o banco é OBRIGADO a oferecer a conversão da dívida em parcelamento, com condições mais vantajosas.`
             };
         } else if (serieBcb === '20718') {
             return {
                 tipo: 'cheque',
                 dias: diffDays,
-                mensagem: `⚠️ Seu cheque especial está sendo usado há ${diffDays} dias. Segundo a Resolução CMN 4.765/2019, após 30 dias o banco DEVE OFERTAR parcelamento (mas você pode recusar). Verifique se recebeu essa oferta!`
+                mensagem: `⚠️ Seu cheque especial está sendo usado há mais de ${diffDays} dias. Segundo a Resolução CMN 4.765/2019, após 30 dias o banco DEVE OFERTAR uma linha de crédito para quitação do saldo devedor, geralmente parcelada. Essa oferta pode ser recusada.`
             };
         }
     }

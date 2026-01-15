@@ -16,9 +16,9 @@
         <h1 class="text-3xl font-bold text-center text-blue-400 mb-8">LimpAI SPC</h1>
     
     <form id="debtForm" class="space-y-6">
-        <!-- Nome Completo -->
+        <!-- Nome -->
         <div class="space-y-2">
-            <label class="block text-sm font-semibold text-blue-400">Nome Completo:</label>
+            <label class="block text-sm font-semibold text-blue-400">Nome:</label>
             <input type="text" name="nome" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
         </div>
 
@@ -30,11 +30,11 @@
             </p>
             <select name="serie_bcb" id="serie_bcb" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
                 <option value="" disabled selected>Selecione a modalidade...</option>
-                <option value="20716" data-desc="Crédito Rotativo: Juros cobrados sobre o saldo não pago da fatura. Limite legal de 30 dias.">Cartão de Crédito (Rotativo Total)</option>
-                <option value="20718" data-desc="Cheque Especial: Limite vinculado à conta corrente. Taxas altíssimas para uso imediato.">Cheque Especial</option>
+                <option value="20716" data-desc="Crédito Rotativo: Juros cobrados sobre o saldo não pago da fatura. Limite legal de 30 dias.">Cartão de Crédito (Rotativo)</option>
                 <option value="20719" data-desc="Cartão Parcelado: Opção obrigatória após 30 dias no rotativo, com juros geralmente menores.">Cartão de Crédito (Parcelado)</option>
+                <option value="20718" data-desc="Cheque Especial: Limite vinculado à conta corrente. Taxas altíssimas para uso imediato.">Cheque Especial</option>
                 <option value="20746" data-desc="Crédito Pessoal (Carnê): Empréstimo sem consignação em folha.">Crédito Pessoal (Não Consignado)</option>
-                <option value="20747" data-desc="Crédito Consignado: Desconto direto no salário ou aposentadoria. Taxas mais baixas.">Crédito Consignado (Total)</option>
+                <option value="20747" data-desc="Crédito Consignado: Desconto direto no salário ou aposentadoria. Taxas mais baixas.">Crédito Consignado</option>
                 <option value="20734" data-desc="Financiamento de Veículos: Crédito com alienação fiduciária do carro ou moto.">Financiamento de Veículos</option>
                 <option value="20771" data-desc="Crédito Imobiliário: Financiamento de habitação com taxas de mercado.">Crédito Imobiliário</option>
             </select>
@@ -45,7 +45,7 @@
         <div class="space-y-2" id="group_valor_total_emprestimo">
             <label id="label_valor_total_emprestimo" class="block text-sm font-semibold text-blue-400">Valor Total do Empréstimo:</label>
             <p class="text-xs text-gray-400 bg-gray-700 p-3 rounded-lg border border-gray-600 leading-relaxed">
-                Valor original contratado (principal), sem considerar juros futuros. Usado para calcular o custo total do contrato.
+                Valor original contratado, sem considerar juros futuros. Usado para calcular o custo total do contrato.
             </p>
             <input type="text" id="valor_total_emprestimo_input" placeholder="R$ 0,00" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
         </div>
@@ -54,7 +54,7 @@
         <div class="space-y-2" id="group_quantidade_parcelas">
             <label class="block text-sm font-semibold text-blue-400">Número Total de Parcelas:</label>
             <p class="text-xs text-gray-400 bg-gray-700 p-3 rounded-lg border border-gray-600 leading-relaxed">
-                Duração total do contrato em parcelas. Informe um número inteiro.
+                Duração total do contrato em quantidade de parcelas.
             </p>
             <input type="number" name="quantidade_parcelas" min="0" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
         </div>
@@ -99,7 +99,7 @@
         <div class="space-y-2">
             <label class="block text-sm font-semibold text-blue-400">Sua Renda Mensal Líquida:</label>
             <p class="text-xs text-gray-400 bg-gray-700 p-3 rounded-lg border border-gray-600 leading-relaxed">
-                Informe o valor que você recebe livre de impostos. Este dado é o pilar para calcularmos o seu <span class="font-semibold text-blue-400">Comprometimento de Renda</span> e verificar se a dívida ameaça sua subsistência.
+                Informe o valor que você recebe livre de impostos. Este dado é o importante para calcularmos o seu <span class="font-semibold text-blue-400">Comprometimento de Renda</span> e verificar se a dívida ameaça sua subsistência.
             </p>
             <input type="text" id="renda_input" placeholder="R$ 0,00" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
         </div>
@@ -162,7 +162,7 @@
 
         <!-- Botão Submit -->
         <button type="submit" id="btnSubmit" class="w-full px-6 py-4 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-bold rounded-lg transition-colors duration-200 mt-8">
-            Gerar Laudo Técnico e Jurídico
+            Gerar Laudo
         </button>
     </form>
 
