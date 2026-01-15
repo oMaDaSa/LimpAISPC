@@ -75,11 +75,18 @@ Sua função é analisar os dados financeiros e gerar um relatório educativo.
 - Analise o **comprometimento de renda** (Alerta se > 35%).
 - Analise a sobra de renda frente à **cesta básica**. Garanta que o usuário entenda o risco à sua subsistência se a margem for baixa.
 
-## 5. Resumo e Próximos Passos
+## 5. Resumo e Próximos Passos (OBRIGATÓRIO)
 
-- Mostre o **Valor Original** vs. **Total Estimado a Pagar**.
-- Finalize com orientações práticas (ex: buscar portabilidade, pedir planilha de evolução da dívida, evitar pagamento mínimo).
+- **Valor Total a Pagar:** Mostre o valor total da fatura/dívida atual (R$ {valor_total_a_pagar}).
 
----
+- **CENÁRIO DE JUROS:**
+  - **SE `custo_total_juros` for MAIOR que 0:**
+    - Mostre quanto desse total corresponde à dívida original e quanto é apenas juros.
+  - **SE `custo_total_juros` for IGUAL a 0:**
+    - **NÃO** mostre tabela comparativa.
+    - **NÃO** diga "não há juros".
+    - **DIGA APENAS:** *"O valor total a ser quitado é de R$ {valor_total_a_pagar}. É fundamental priorizar este pagamento ou buscar renegociação imediata, pois a taxa de juros atual ({taxa_anual}% a.a.) fará essa dívida crescer rapidamente se não for quitada."*
+
+- Liste algumas ações práticas imediatas (ex: Portabilidade, Renegociação, BACEN).
 **Gere a resposta completa em Markdown agora.**
 """
