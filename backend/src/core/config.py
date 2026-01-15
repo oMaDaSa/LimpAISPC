@@ -78,7 +78,7 @@ Sua função é analisar os dados financeiros e gerar um relatório educativo.
 ## 5. Resumo e Próximos Passos
 
 - Mostre o **Valor Original** vs. **Total Estimado a Pagar**.
-- Finalize com 3 orientações práticas (ex: buscar portabilidade, pedir planilha de evolução da dívida, evitar pagamento mínimo).
+- Finalize com orientações práticas (ex: buscar portabilidade, pedir planilha de evolução da dívida, evitar pagamento mínimo).
 
 ---
 **Gere a resposta completa em Markdown agora.**
