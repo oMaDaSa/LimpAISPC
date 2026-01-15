@@ -154,22 +154,15 @@ document.getElementById('debtForm').addEventListener('submit', async function(e)
     const formData = new FormData(this);
     const rawData = Object.fromEntries(formData.entries());
 
-    console.log('Iniciando processamento...');
-    
     // Busca taxa de mercado do BCB
-    console.log('Buscando taxa do BCB...');
     const marketRate = await fetchMarketRate(rawData.serie_bcb, rawData.data_contrato);
-    console.log('Taxa BCB recebida:', marketRate);
 
-    console.log('Processando valores do formulário...');
     const serie = rawData.serie_bcb;
     const valorCampoPrincipal = parseFloat(valorTotalEmprestimoMask.unmaskedValue.replace(',', '.')) || 0;
     const parcelaValor = parseFloat(parcelaMask.unmaskedValue.replace(',', '.')) || 0;
     const rendaValor = parseFloat(rendaMask.unmaskedValue.replace(',', '.')) || 0;
     const taxaCetValor = parseFloat(taxaMask.unmaskedValue.replace(',', '.')) || 0;
     const valorOriginalDividaInput = parseFloat(rawData.valor_original_divida || 0) || 0;
-
-    console.log('Valores parseados:', { valorCampoPrincipal, parcelaValor, rendaValor, taxaCetValor });
 
     // Valores padrão
     let valor_total_emprestimo = valorCampoPrincipal;
@@ -221,10 +214,7 @@ document.getElementById('debtForm').addEventListener('submit', async function(e)
     const [year, month, day] = rawData.data_contrato.split('-');
     data.data_contrato = `${day}/${month}/${year}`;
 
-    console.log('Data do objeto construído:', data);
-
     // Verificar alerta de 30 dias no frontend
-    console.log('Verificando alerta de 30 dias...');
     const alerta30Dias = checkThirtyDays(rawData.data_contrato, rawData.serie_bcb);
     if (alerta30Dias) {
         const showAlert = confirm(alerta30Dias.mensagem + '\n\nDeseja continuar com a análise?');
@@ -239,8 +229,6 @@ document.getElementById('debtForm').addEventListener('submit', async function(e)
     const password = document.getElementById('password_input').value;
     data.password = password;
 
-    console.log('Enviando para API...');
-    
     try {
         const response = await fetch('https://7z59i92b98.execute-api.us-east-1.amazonaws.com/api/debt-analysis', {
         //const response = await fetch('http://localhost:5000/api/debt-analysis', {
@@ -248,14 +236,10 @@ document.getElementById('debtForm').addEventListener('submit', async function(e)
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         });
-        
-        console.log('Response recebida, status:', response.status);
-        
         const result = await response.json();
-        console.log('Result parseado:', result);
         
         if (result.error === "Senha incorreta") {
-            alert("Senha incorreta. Verifique a senha e tente novamente.");
+            alert("❌ Senha incorreta. Verifique a senha e tente novamente.");
         } else if (result.error) {
             alert("Erro: " + result.error);
         } else if (result.status === "success") {
@@ -275,8 +259,7 @@ document.getElementById('debtForm').addEventListener('submit', async function(e)
             resultDiv.scrollIntoView({ behavior: 'smooth' });
         }
     } catch (error) {
-        console.error('ERRO CAPTURADO:', error);
-        alert("Erro ao conectar com o servidor: " + error.message);
+        alert("Erro ao conectar com o servidor da AWS.");
     } finally {
         btn.disabled = false;
         btn.innerText = "Gerar Laudo";

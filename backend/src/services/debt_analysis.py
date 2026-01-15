@@ -3,6 +3,34 @@ import boto3
 from services.calculator import Calculator
 from services.data_parser import parse_debt_payload
 import json
+import requests
+from datetime import datetime
+
+def fetch_market_rate_from_bcb(serie_bcb: str, data_contrato: str):
+    """Busca a taxa de mercado do Banco Central do Brasil"""
+    try:
+        # data_contrato vem no formato DD/MM/YYYY
+        day, month, year = data_contrato.split('/')
+        date_start = f"01/{month}/{year}"
+        date_end = f"28/{month}/{year}"
+        
+        url = f"https://api.bcb.gov.br/dados/serie/bcdata.sgs.{serie_bcb}/dados"
+        params = {
+            "formato": "json",
+            "dataInicial": date_start,
+            "dataFinal": date_end
+        }
+        
+        response = requests.get(url, params=params, timeout=10)
+        response.raise_for_status()
+        data = response.json()
+        
+        if data and len(data) > 0:
+            return float(data[0]['valor'])
+        return None
+    except Exception as e:
+        print(f"Erro ao buscar taxa do BCB: {e}")
+        return None
 
 def run_analysis(data: dict):
     try:
@@ -11,11 +39,16 @@ def run_analysis(data: dict):
         
         parsed = parse_debt_payload(data)
         
+        # Buscar taxa de mercado do BCB (backend evita problemas de CORS)
+        taxa_mercado_anual = parsed.get('taxa_mercado_anual')
+        if not taxa_mercado_anual:
+            taxa_mercado_anual = fetch_market_rate_from_bcb(parsed['serie_bcb'], parsed['data_contrato'])
+        
         calc = Calculator()
         metricas_taxas = calc.compute_tax_metrics(
             parsed['tipo_taxa'], 
             parsed['taxa_cet'], 
-            parsed['taxa_mercado_anual'],
+            taxa_mercado_anual,
             parsed['serie_bcb']
         )
         saude_financeira = calc.compute_financial_health(
@@ -120,7 +153,5 @@ def run_analysis(data: dict):
             "ai_response": response["output"]["text"]
         }
 
-    except KeyError as e:
-        raise Exception(f"Erro na análise completa - campo ausente: {str(e)}")
     except Exception as e:
         raise Exception(f"Erro na análise completa: {str(e)}")
