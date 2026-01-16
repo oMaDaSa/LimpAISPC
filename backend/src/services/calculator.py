@@ -47,19 +47,23 @@ class Calculator:
         
         return result
 
-    def compute_financial_health(self, income: float, installment: float, dependents_count: int) -> dict:
-        #saude financeira
-        adjusted_existential_min = self.EXISTENTIAL_MIN + (dependents_count * self.COST_PER_DEPENDENT)
-        commitment = (installment / income) * 100
+    def compute_financial_health(self, income: float, installment: float, dependents_count: int, valor_cesta_basica: float = 0.0) -> dict:
+        if valor_cesta_basica > 0:
+            adjusted_existential_min = valor_cesta_basica * (1 + dependents_count)
+        else:
+            adjusted_existential_min = self.EXISTENTIAL_MIN + (dependents_count * self.COST_PER_DEPENDENT)
+        
+        commitment = (installment / income) * 100 if income > 0 else 0
         monthly_leftover = income - installment
         violates_minimum = monthly_leftover < adjusted_existential_min
         # renda per capita familiar após a parcela
-        family_per_capita = monthly_leftover / (1 + dependents_count)
+        family_per_capita = monthly_leftover / (1 + dependents_count) if (1 + dependents_count) > 0 else monthly_leftover
+        
         return {
             "comprometimento_renda_pct": round(commitment, 2),
             "saldo_pos_parcela": round(monthly_leftover, 2),
             "renda_per_capita_familiar": round(family_per_capita, 2),
-            "minimo_existencial_ajustado": adjusted_existential_min,
+            "minimo_existencial_ajustado": round(adjusted_existential_min, 2),
             "alerta_minimo_existencial": violates_minimum,
             "acima_margem_seguranca": commitment > self.SECURITY_MARGIN
         }
@@ -88,6 +92,7 @@ class Calculator:
     def compute_contract_impact(self, installment: float, total_loan: float, installments_count: int) -> dict:
         total_to_pay = installment * installments_count
         total_interest_cost = total_to_pay - total_loan
+        
         return {
             "valor_total_a_pagar": round(total_to_pay, 2),
             "custo_total_juros": round(total_interest_cost, 2),

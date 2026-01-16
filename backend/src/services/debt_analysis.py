@@ -21,7 +21,8 @@ def run_analysis(data: dict):
         saude_financeira = calc.compute_financial_health(
             parsed['renda'], 
             parsed['parcela'], 
-            parsed['quantidade_dependentes']
+            parsed['quantidade_dependentes'],
+            parsed['valor_cesta_basica']
         )
         
         # cálculo de impacto do contrato: lógica diferente para rotativo e parcelado
