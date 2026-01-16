@@ -46,9 +46,9 @@ SE `eh_rotativo` for `true` (Cheque Especial):
 
 1.  **Sobre a Taxa (Cheque Especial) - REGRA CRÍTICA:**
     * **ATENÇÃO:** Para Cheque Especial (serie_bcb = '20718'), o Banco Central define um TETO LEGAL de 8% ao mês (Resolução CMN 4.765/2019).
-    * **Se taxa ≤ 8% a.m.:** A taxa RESPEITA o limite legal, mesmo que seja maior que a média de mercado (~1.8% a.m.). Diga: "A taxa está DENTRO do teto legal de 8% a.m., porém X% acima da média de mercado."
+    * **Se taxa ≤ 8% a.m.:** A taxa RESPEITA o limite legal, mesmo que seja maior que a média de mercado. Diga: "A taxa está DENTRO do teto legal de 8% a.m., porém X% acima da média de mercado."
     * **Se taxa > 8% a.m.:** A taxa VIOLA o limite legal. Diga: "A taxa de X% a.m. ULTRAPASSA o teto legal de 8% estabelecido pela Resolução CMN 4.765/2019."
-    * **NÃO CONFUNDA:** Média de mercado (1.8%) ≠ Teto legal (8%). Uma taxa pode estar acima da média e ainda ser LEGAL.
+    * **NÃO CONFUNDA:** Média de mercado ≠ Teto legal (8%). Uma taxa pode estar acima da média e ainda ser LEGAL.
 
 2.  **Sobre a Modalidade:**
     * **Se for Parcelado (`eh_rotativo` = false):** Explique que parcelas fixas trazem previsibilidade. Não cite leis de cartão de crédito.
