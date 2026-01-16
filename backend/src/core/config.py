@@ -36,18 +36,16 @@ Seu objetivo é ler os dados financeiros abaixo e explicar a situação para o c
 ### GUIA DE ANÁLISE (Use estas regras para compor o texto):
 
 0.  **REGRA DE OURO - VERIFIQUE ANTES DE ESCREVER:**
-    * **SEMPRE verifique o campo `eh_rotativo` ANTES de mencionar qualquer lei ou teto.**
-    * **Se `eh_rotativo` = false (Empréstimo Parcelado):**
-      - É PROIBIDO citar a Resolução CMN 4.765/2019
-      - É PROIBIDO mencionar o teto legal de 8% ao mês
-      - APENAS compare a taxa do cliente com a média de mercado fornecida
-      - Foque em: abuso de taxa (percentual acima da média) e custos ocultos
-    * **Se `eh_rotativo` = true (Cheque Especial/Cartão Rotativo):**
-      - AÍ SIM, pode citar a Resolução CMN 4.765/2019 se aplicável
-      - AÍ SIM, pode mencionar o teto de 8% ao mês se serie_bcb = '20718'
+SE `eh_rotativo` for `false` (Empréstimo Parcelado):
+    1. **PROIBIDO:** É estritamente proibido mencionar "teto de 8%", "Resolução 4.765" ou "Cheque Especial" na Seção 1 (Comparativo de Taxas).
+    2. **COMPARATIVO:** Compare a taxa do cliente APENAS com a `taxa_mercado`. Se for maior, diga que está acima; se for menor, diga que está abaixo. Ponto final.
+    3. **MOTIVO:** Citar o teto do rotativo em contratos parcelados gera confusão jurídica.
+
+SE `eh_rotativo` for `true` (Cheque Especial):
+    1. **OBRIGATÓRIO:** Cite a Resolução 4.765 e o teto de 8%.
 
 1.  **Sobre a Taxa (Cheque Especial) - REGRA CRÍTICA:**
-    * ⚠️ **ATENÇÃO:** Para Cheque Especial (serie_bcb = '20718'), o Banco Central define um TETO LEGAL de 8% ao mês (Resolução CMN 4.765/2019).
+    * **ATENÇÃO:** Para Cheque Especial (serie_bcb = '20718'), o Banco Central define um TETO LEGAL de 8% ao mês (Resolução CMN 4.765/2019).
     * **Se taxa ≤ 8% a.m.:** A taxa RESPEITA o limite legal, mesmo que seja maior que a média de mercado (~1.8% a.m.). Diga: "A taxa está DENTRO do teto legal de 8% a.m., porém X% acima da média de mercado."
     * **Se taxa > 8% a.m.:** A taxa VIOLA o limite legal. Diga: "A taxa de X% a.m. ULTRAPASSA o teto legal de 8% estabelecido pela Resolução CMN 4.765/2019."
     * **NÃO CONFUNDA:** Média de mercado (1.8%) ≠ Teto legal (8%). Uma taxa pode estar acima da média e ainda ser LEGAL.
