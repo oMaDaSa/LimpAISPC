@@ -53,16 +53,20 @@ class Calculator:
         else:
             adjusted_existential_min = self.EXISTENTIAL_MIN + (dependents_count * self.COST_PER_DEPENDENT)
         
+        total_family_members = 1 + dependents_count
         commitment = (installment / income) * 100 if income > 0 else 0
         monthly_leftover = income - installment
         violates_minimum = monthly_leftover < adjusted_existential_min
-        # renda per capita familiar após a parcela
-        family_per_capita = monthly_leftover / (1 + dependents_count) if (1 + dependents_count) > 0 else monthly_leftover
+        
+        official_per_capita_income = income / total_family_members if total_family_members > 0 else income
+        
+        disposable_per_capita_income = monthly_leftover / total_family_members if total_family_members > 0 else monthly_leftover
         
         return {
             "comprometimento_renda_pct": round(commitment, 2),
             "saldo_pos_parcela": round(monthly_leftover, 2),
-            "renda_per_capita_familiar": round(family_per_capita, 2),
+            "renda_per_capita_familiar": round(official_per_capita_income, 2),  # ✅ Agora usa renda bruta (padrão IBGE)
+            "renda_disponivel_per_capita": round(disposable_per_capita_income, 2),  # ✅ NOVO: mostra empobrecimento
             "minimo_existencial_ajustado": round(adjusted_existential_min, 2),
             "alerta_minimo_existencial": violates_minimum,
             "acima_margem_seguranca": commitment > self.SECURITY_MARGIN
