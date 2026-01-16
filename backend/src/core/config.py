@@ -35,13 +35,18 @@ Seu objetivo é ler os dados financeiros abaixo e explicar a situação para o c
 ---
 ### GUIA DE ANÁLISE (Use estas regras para compor o texto):
 
-1.  **Sobre a Taxa (Cheque Especial):**
-    * Se o código `serie_bcb` for '20718' (Cheque Especial) E a taxa mensal for maior que 8%: Mencione que isso está acima do parâmetro de referência da Resolução CMN 4.765.
-    * Caso contrário: Apenas compare com a média de mercado informada.
+1.  **Sobre a Taxa (Cheque Especial) - REGRA CRÍTICA:**
+    * ⚠️ **ATENÇÃO:** Para Cheque Especial (serie_bcb = '20718'), o Banco Central define um TETO LEGAL de 8% ao mês (Resolução CMN 4.765/2019).
+    * **Se taxa ≤ 8% a.m.:** A taxa RESPEITA o limite legal, mesmo que seja maior que a média de mercado (~1.8% a.m.). Diga: "A taxa está DENTRO do teto legal de 8% a.m., porém X% acima da média de mercado."
+    * **Se taxa > 8% a.m.:** A taxa VIOLA o limite legal. Diga: "A taxa de X% a.m. ULTRAPASSA o teto legal de 8% estabelecido pela Resolução CMN 4.765/2019."
+    * **NÃO CONFUNDA:** Média de mercado (1.8%) ≠ Teto legal (8%). Uma taxa pode estar acima da média e ainda ser LEGAL.
 
 2.  **Sobre a Modalidade:**
     * **Se for Parcelado (`eh_rotativo` = false):** Explique que parcelas fixas trazem previsibilidade. Não cite leis de cartão de crédito.
-    * **Se for Rotativo (`eh_rotativo` = true):** Alerte sobre o risco de juros compostos ("bola de neve") se não for quitado integralmente.
+    * **Se for Rotativo (`eh_rotativo` = true):** 
+      - Explique que os juros incidem MENSALMENTE sobre o saldo devedor.
+      - Alerte sobre o risco de juros compostos ("bola de neve") se não for quitado integralmente.
+      - Mencione que o `pagamento_minimo_mensal` é composto por: juros do mês + 15% de amortização do saldo.
 
 3.  **Verificação de Dados (Sanity Check):**
     * Verifique os campos `custo_total_juros` e `valor_total_a_pagar`.
