@@ -2,6 +2,15 @@
 
 An intelligent debt analysis tool, to help Brazilian consumers understand their credit contracts, identify abusive interest rates, and provides AI-powered legal insights based on Brazilian consumer protection laws.
 
+## Live Demo
+
+- **Web Application**: [https://omadasa.github.io/LimpAISPC/](https://omadasa.github.io/LimpAISPC/)
+- **API Health Check**: [https://7z59i92b98.execute-api.us-east-1.amazonaws.com/](https://7z59i92b98.execute-api.us-east-1.amazonaws.com/)
+
+## System Architecture
+
+![Application Flow](readme_assets/flow.png)
+
 ## Features
 
 - **Market Rate Comparison**: Fetches market rates from Brazilian Central Bank (BCB) API
