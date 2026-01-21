@@ -26,7 +26,7 @@ def debt_analysis():
         
         return jsonify({
             "status": "success",
-            "analysis_json": result["analysis_json"],
+            #"analysis_json": result["analysis_json"],
             "ai_response": result["ai_response"]
         }), 200
 

@@ -136,7 +136,7 @@ def run_analysis(data: dict):
         )
 
         return {
-            "analysis_json": analysis_json,
+            #"analysis_json": analysis_json,
             "ai_response": response["output"]["text"]
         }
 
